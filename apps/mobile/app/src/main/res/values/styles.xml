@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.MyFeed" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:colorAccent">#315C4B</item>
+    </style>
+</resources>

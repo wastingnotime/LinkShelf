@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="org.wastingnotime.myfeed.InboxFlowTest" tests="5" failures="0" errors="0" skipped="0" time="11.649" timestamp="2026-10-31T15:36:59" hostname="localhost">
+  <properties>
+    <property name="device" value="my-feed-wnt-219(AVD) - 15" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="swipeRightArchivesAndSwipeLeftDeletesWithUndo" classname="org.wastingnotime.myfeed.InboxFlowTest" time="2.507" />
+  <testcase name="repeatedSharesRestoreInboxPreserveOriginalAndReturnWithoutConfirmation" classname="org.wastingnotime.myfeed.InboxFlowTest" time="5.672" />
+  <testcase name="invalidSharedTextReturnsWithoutWriting" classname="org.wastingnotime.myfeed.InboxFlowTest" time="0.356" />
+  <testcase name="pasteRecreateOpenArchiveDeleteUndoAndRestore" classname="org.wastingnotime.myfeed.InboxFlowTest" time="2.217" />
+  <testcase name="receiverRecreationDuringCommitDoesNotCaptureTwice" classname="org.wastingnotime.myfeed.InboxFlowTest" time="0.432" />
+</testsuite>

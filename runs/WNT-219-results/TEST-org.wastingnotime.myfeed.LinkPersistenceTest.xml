@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.wastingnotime.myfeed.LinkPersistenceTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-31T15:36:37.331Z" hostname="chaos" time="3.283">
+  <properties/>
+  <testcase name="openingOnlyChangesLastOpenedAtInInboxAndArchive" classname="org.wastingnotime.myfeed.LinkPersistenceTest" time="2.779"/>
+  <testcase name="staleUndoCannotOverwriteReshareOrNewLifecycleAction" classname="org.wastingnotime.myfeed.LinkPersistenceTest" time="0.077"/>
+  <testcase name="newestFirstWithStableIdTieBreakAndDeletedRowsExcluded" classname="org.wastingnotime.myfeed.LinkPersistenceTest" time="0.093"/>
+  <testcase name="invalidPasteDoesNotWriteAndMeaningfulQueriesStayDistinct" classname="org.wastingnotime.myfeed.LinkPersistenceTest" time="0.046"/>
+  <testcase name="concurrentDuplicatesAcrossDatabaseConnectionsAreAtomic" classname="org.wastingnotime.myfeed.LinkPersistenceTest" time="0.149"/>
+  <testcase name="undoDoesNotEraseOpeningThatHappensAfterAction" classname="org.wastingnotime.myfeed.LinkPersistenceTest" time="0.042"/>
+  <testcase name="captureAndLifecycleSurviveDatabaseReopen" classname="org.wastingnotime.myfeed.LinkPersistenceTest" time="0.046"/>
+  <testcase name="archiveDeleteAndUndoRestoreExactPreviousLifecycle" classname="org.wastingnotime.myfeed.LinkPersistenceTest" time="0.05"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
