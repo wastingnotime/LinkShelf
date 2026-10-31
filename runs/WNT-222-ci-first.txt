@@ -1,0 +1,97 @@
+Run https://github.com/wastingnotime/my-feed/actions/runs/41236891879
+Focused log excerpt; full logs and test-results artifact are on that run.
+2026-10-31T20:06:36.0866653Z Starting 11 tests on emulator-5554 - 15
+2026-10-31T20:06:46.0908707Z 
+2026-10-31T20:06:46.0913721Z emulator-5554 - 15 Tests 1/11 completed. (0 skipped) (0 failed)
+2026-10-31T20:06:48.4268916Z ERROR        | Failed to find ColorBuffer: 130
+2026-10-31T20:06:48.4297534Z ERROR        | Failed to bind to texture: invalid color buffer.
+2026-10-31T20:06:56.0790688Z emulator-5554 - 15 Tests 3/11 completed. (0 skipped) (0 failed)
+2026-10-31T20:07:06.0750696Z emulator-5554 - 15 Tests 5/11 completed. (0 skipped) (0 failed)
+2026-10-31T20:07:16.0777316Z emulator-5554 - 15 Tests 6/11 completed. (0 skipped) (0 failed)
+2026-10-31T20:07:16.3112359Z ERROR        | Failed to find ColorBuffer: 288
+2026-10-31T20:07:16.3128625Z ERROR        | Failed to bind to texture: invalid color buffer.
+2026-10-31T20:07:26.0757803Z emulator-5554 - 15 Tests 8/11 completed. (0 skipped) (0 failed)
+2026-10-31T20:07:27.3768308Z 
+2026-10-31T20:07:27.3807531Z > Task :app:connectedDebugAndroidTest
+2026-10-31T20:07:27.7097174Z 
+2026-10-31T20:07:27.7223407Z org.wastingnotime.myfeed.InboxFlowTest > emptyViewsAndBackDismissDialogThenSearchThenReturnToMain[emulator-5554 - 15] [31mFAILED [0m
+2026-10-31T20:07:27.7262533Z 	java.lang.AssertionError: Assert failed: The component with Text + InputText + EditableText contains 'A quiet inbox. Share a link to my-feed from another app, or paste one here.' (ignoreCase: false) is not displayed!
+2026-10-31T20:07:27.7309528Z 	at androidx.compose.ui.test.AssertionsKt.assertIsDisplayed(Assertions.kt:34)
+2026-10-31T20:07:36.0771503Z 
+2026-10-31T20:07:36.0817541Z emulator-5554 - 15 Tests 10/11 completed. (0 skipped) (1 failed)
+2026-10-31T20:07:43.6819621Z Finished 11 tests on emulator-5554 - 15
+2026-10-31T20:07:43.6878546Z 
+2026-10-31T20:07:43.6927323Z > Task :app:connectedDebugAndroidTest
+2026-10-31T20:07:43.6957980Z Tests on emulator-5554 - 15 failed: There was 1 failure(s).
+2026-10-31T20:07:45.0796708Z 
+2026-10-31T20:07:45.0887368Z > Task :app:connectedDebugAndroidTest FAILED
+2026-10-31T20:07:45.1770753Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__reactivecircus_android-emulator-runner-1793477137586.json
+2026-10-31T20:07:45.1787650Z 69 actionable tasks: 46 executed, 23 up-to-date
+2026-10-31T20:07:45.1807587Z 
+2026-10-31T20:07:45.1827260Z FAILURE: Build failed with an exception.
+2026-10-31T20:07:45.1846817Z 
+2026-10-31T20:07:45.1867110Z * What went wrong:
+2026-10-31T20:07:45.1869002Z Execution failed for task ':app:connectedDebugAndroidTest'.
+2026-10-31T20:07:45.1897351Z > There were failing tests. See the report at: file:///home/runner/work/my-feed/my-feed/apps/mobile/app/build/reports/androidTests/connected/debug/index.html
+2026-10-31T20:07:45.1911398Z 
+2026-10-31T20:07:45.1911697Z * Try:
+2026-10-31T20:07:45.1912287Z > Run with --stacktrace option to get the stack trace.
+2026-10-31T20:07:45.1946825Z > Run with --info or --debug option to get more log output.
+2026-10-31T20:07:45.2039471Z > Run with --scan to get full insights.
+2026-10-31T20:07:45.2056496Z > Get more help at https://help.gradle.org.
+2026-10-31T20:07:45.2125774Z 
+2026-10-31T20:07:45.2179886Z BUILD FAILED in 2m 9s
+2026-10-31T20:07:45.5895338Z ##[error]The process '/usr/bin/sh' failed with exit code 1
+2026-10-31T20:07:45.5922406Z ##[group]Terminate Emulator
+2026-10-31T20:07:45.5983142Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 emu kill
+2026-10-31T20:07:45.6087022Z OK: killing emulator, bye bye
+2026-10-31T20:07:45.6091164Z OK
+2026-10-31T20:07:45.6092154Z ##[endgroup]
+2026-10-31T20:07:45.6143605Z INFO         | Wait for emulator (pid 3067) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)
+2026-10-31T20:07:45.6167864Z 
+2026-10-31T20:07:45.6484788Z USER_INFO    | Snapshots have been disabled by the user, save request is ignored.
+2026-10-31T20:07:45.6486868Z INFO         | Saving snapshot 'default_boot' took 0 ms
+2026-10-31T20:07:46.3886577Z ERROR        | stop: Not implemented
+2026-10-31T20:07:46.3887548Z WARNING      | Emulator client has not yet been configured.. Call configure me first!
+2026-10-31T20:07:46.5201667Z INFO         | removeAll
+2026-10-31T20:07:46.5843676Z WARNING      | Netsim Wifi dns:///localhost:39883 is gone due to Stream removed (CANCELLED)
+2026-10-31T20:07:46.5998762Z INFO         | ipv6:%5B::1%5D:39883: Got goaway [2] err=UNAVAILABLE:GOAWAY received; Error code: 2; Debug Text: Cancelling all calls {http2_error:2}
+2026-10-31T20:07:47.5331964Z ##[group]Run actions/upload-artifact@v4
+2026-10-31T20:07:47.5332271Z with:
+2026-10-31T20:07:47.5332496Z   name: android-test-results
+2026-10-31T20:07:47.5332883Z   path: apps/mobile/app/build/reports/
+apps/mobile/app/build/outputs/androidTest-results/
+
+2026-10-31T20:07:47.5333277Z   if-no-files-found: warn
+2026-10-31T20:07:47.5333529Z   compression-level: 6
+2026-10-31T20:07:47.5333758Z   overwrite: false
+2026-10-31T20:07:47.5333972Z   include-hidden-files: false
+2026-10-31T20:07:47.5334204Z env:
+2026-10-31T20:07:47.5334484Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-10-31T20:07:47.5334918Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-10-31T20:07:47.5335281Z   ANDROID_HOME: /usr/local/lib/android/sdk
+2026-10-31T20:07:47.5335565Z   ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+2026-10-31T20:07:47.5335860Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-10-31T20:07:47.5336395Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-10-31T20:07:47.5336675Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-10-31T20:07:47.5336954Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-10-31T20:07:47.5337341Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-10-31T20:07:47.5337760Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-10-31T20:07:47.5338058Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-10-31T20:07:47.5338328Z   ANDROID_AVD_HOME: /home/runner/.android/avd
+2026-10-31T20:07:47.5338591Z ##[endgroup]
+2026-10-31T20:07:47.9382529Z (node:3593) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-31T20:07:47.9386664Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-31T20:07:47.9744146Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-31T20:07:47.9747210Z The least common ancestor is /home/runner/work/my-feed/my-feed/apps/mobile/app/build. This will be the root directory of the artifact
+2026-10-31T20:07:47.9749350Z With the provided path, there will be 45 files uploaded
+2026-10-31T20:07:47.9751846Z Artifact name is valid!
+2026-10-31T20:07:47.9752536Z Root directory input is valid!
+2026-10-31T20:07:48.3954608Z Beginning upload of artifact content to blob storage
+2026-10-31T20:07:48.4791584Z (node:3593) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-31T20:07:48.8674601Z Uploaded bytes 137698
+2026-10-31T20:07:48.9273095Z Finished uploading artifact content to blob storage!
+2026-10-31T20:07:48.9274605Z SHA256 digest of uploaded artifact zip is bc226a00c6390c2c4d7ac84e59af0cf31d706a4d4e4df744e36960d03d443eeb
+2026-10-31T20:07:48.9275672Z Finalizing artifact upload
+2026-10-31T20:07:49.4815784Z Artifact android-test-results.zip successfully finalized. Artifact ID 13056071895
+2026-10-31T20:07:49.4816744Z Artifact android-test-results has been successfully uploaded! Final size is 137698 bytes. Artifact ID is 13056071895

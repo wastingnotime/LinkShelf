@@ -35,5 +35,6 @@ Grouped contains the same inbox items exactly once, using deterministic title
 similarity and a host fallback for missing titles. Archived groups within capture
 dates. Local title/description/URL search offers Inbox, Archived and All scopes
 and excludes deleted links. See [the precise rules](docs/search-and-grouping.md)
-and [WNT-221 evidence](runs/WNT-221.md). There are no cross-repository
+and [WNT-221 evidence](runs/WNT-221.md). Final acceptance, accessibility and
+APK delivery evidence is in [WNT-222](runs/WNT-222.md). There are no cross-repository
 dependencies, backend, login, or sync.

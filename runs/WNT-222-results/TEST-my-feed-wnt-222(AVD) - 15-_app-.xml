@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="org.wastingnotime.myfeed.InboxFlowTest" tests="11" failures="0" errors="0" skipped="0" time="24.183" timestamp="2026-10-31T20:10:03" hostname="localhost">
+  <properties>
+    <property name="device" value="my-feed-wnt-222(AVD) - 15" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="failedPreviewKeepsUrlAndRetryReturnsToPending" classname="org.wastingnotime.myfeed.InboxFlowTest" time="1.395" />
+  <testcase name="labeledTouchControlsAndFailedCardWorkWithoutSwiping" classname="org.wastingnotime.myfeed.InboxFlowTest" time="1.392" />
+  <testcase name="swipeRightArchivesAndSwipeLeftDeletesWithUndo" classname="org.wastingnotime.myfeed.InboxFlowTest" time="1.638" />
+  <testcase name="groupedAndArchivedRenderSimilarityFallbackAndCaptureDateSections" classname="org.wastingnotime.myfeed.InboxFlowTest" time="1.437" />
+  <testcase name="repeatedSharesRestoreInboxPreserveOriginalAndReturnWithoutConfirmation" classname="org.wastingnotime.myfeed.InboxFlowTest" time="0.985" />
+  <testcase name="invalidSharedTextReturnsWithoutWriting" classname="org.wastingnotime.myfeed.InboxFlowTest" time="5.794" />
+  <testcase name="pasteRecreateOpenArchiveDeleteUndoAndRestore" classname="org.wastingnotime.myfeed.InboxFlowTest" time="2.548" />
+  <testcase name="receiverRecreationDuringCommitDoesNotCaptureTwice" classname="org.wastingnotime.myfeed.InboxFlowTest" time="0.936" />
+  <testcase name="emptyViewsAndBackDismissDialogThenSearchThenReturnToMain" classname="org.wastingnotime.myfeed.InboxFlowTest" time="3.028" />
+  <testcase name="partialSwipesShowActionAndCancelWithoutChangingRow" classname="org.wastingnotime.myfeed.InboxFlowTest" time="0.985" />
+  <testcase name="scopedSearchReactsToLifecycleMetadataAndRecreationAndBackReturnsToFeed" classname="org.wastingnotime.myfeed.InboxFlowTest" time="3.602" />
+</testsuite>

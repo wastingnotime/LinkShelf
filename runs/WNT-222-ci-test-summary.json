@@ -1,0 +1,19 @@
+{
+  "run": 41237631887,
+  "unit_report": "android-test-results/reports/tests/testDebugUnitTest/index.html",
+  "unit": {
+    "tests": 54,
+    "failures": 0,
+    "ignored": 0
+  },
+  "instrumented": {
+    "name": "org.wastingnotime.myfeed.InboxFlowTest",
+    "tests": "11",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "69.43",
+    "timestamp": "2026-10-31T20:17:13",
+    "hostname": "localhost"
+  }
+}

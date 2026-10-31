@@ -1,0 +1,152 @@
+{
+  "run_url": "https://github.com/wastingnotime/my-feed/actions/runs/41237631887",
+  "head": "6fd1bf2a50f815a91d216f611ac83a141788220d",
+  "jobs": [
+    {
+      "id": 124644641755,
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 41237631887,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Run android-actions/setup-android@v3",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Install Android SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Unit tests and lint",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Enable emulator acceleration",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Android lifecycle and inbox tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Build debug APK after tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Upload verified APK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "Upload test evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22
+        },
+        {
+          "name": "Post Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13056388364,
+      "name": "android-test-results",
+      "size_in_bytes": 133585,
+      "url": "https://api.github.com/repos/wastingnotime/my-feed/actions/artifacts/13056388364",
+      "archive_download_url": "https://api.github.com/repos/wastingnotime/my-feed/actions/artifacts/13056388364/zip",
+      "expired": false,
+      "created_at": "2026-10-31T20:17:23Z",
+      "expires_at": "2027-01-29T20:10:16Z",
+      "updated_at": "2026-10-31T20:17:23Z",
+      "digest": "sha256:d1e7fe0311e02fbc0556d8995b01077545931a145f713d0a8ca42ee8e7538efd",
+      "workflow_run": {
+        "id": 41237631887,
+        "repository_id": 1440967755,
+        "head_repository_id": 1440967755,
+        "head_branch": "codex/wnt-222-8f71d6e8",
+        "head_sha": "6fd1bf2a50f815a91d216f611ac83a141788220d"
+      }
+    },
+    {
+      "id": 13056174223,
+      "name": "my-feed-debug-c527c527e00f58c9f584bde28e1e19a70b518884",
+      "size_in_bytes": 11352555,
+      "url": "https://api.github.com/repos/wastingnotime/my-feed/actions/artifacts/13056174223",
+      "archive_download_url": "https://api.github.com/repos/wastingnotime/my-feed/actions/artifacts/13056174223/zip",
+      "expired": false,
+      "created_at": "2026-10-31T20:17:22Z",
+      "expires_at": "2027-01-29T20:10:16Z",
+      "updated_at": "2026-10-31T20:17:22Z",
+      "digest": "sha256:31b298984cc3c2e7ddbd9323db8919df0a10e0b22ee0446e64fa8d6f42bd21c2",
+      "workflow_run": {
+        "id": 41237631887,
+        "repository_id": 1440967755,
+        "head_repository_id": 1440967755,
+        "head_branch": "codex/wnt-222-8f71d6e8",
+        "head_sha": "6fd1bf2a50f815a91d216f611ac83a141788220d"
+      }
+    }
+  ]
+}

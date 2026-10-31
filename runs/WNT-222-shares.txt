@@ -1,0 +1,185 @@
++ adb -s emulator-5596 shell 'am start -W -a android.intent.action.VIEW -d '"'"'https://example.com/?wnt222=chrome'"'"' -p com.android.chrome'
+Starting: Intent { act=android.intent.action.VIEW dat=https://example.com/... pkg=com.android.chrome }
+Status: ok
+LaunchState: WARM
+Activity: com.android.chrome/org.chromium.chrome.browser.firstrun.FirstRunActivity
+TotalTime: 275
+WaitTime: 284
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('By continuing, you agree to the Terms of Service. To help improve the app, Chrome sends usage and crash data to Google. Manage', '', '[63,1708][1017,1794]')]
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input tap 540 1613'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Chrome notifications make things easier', '', '[70,1087][1010,1245]'), ('You’ll be able to easily manage media controls, Incognito sessions, downloads and more', '', '[70,1277][1010,1371]'), ('No thanks', '', '[477,1413][708,1539]'), ('Continue', '', '[729,1413][1010,1539]')]
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input tap 592 1476'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+StopIteration
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Example Domain', '', '[0,210][1080,1859]'), ('This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.', '', '[84,700][1000,971]'), ('هذا النطاق مُخصص للاستخدام في أمثلة التوثيق دون الحاجة إلى إذن. هذه ليست خدمة، يُرجى تجنب الاعتماد عليها لأغراض الاختبار والمراقبة.', '', '[84,1010][1000,1189]'), ('该域名仅用于文档示例，无需获得许可。这并非一项服务，请勿将其用于测试和监控目的。', '', '[84,1223][1000,1344]'), ('L’usage de ce domaine est réservé à des exemples de documentation, sans autorisation préalable. Il ne s’agit pas d’un service ; son utilisation à des fins de test ou de surveillance est à éviter.', '', '[84,1378][1000,1617]'), ('Данный домен предназначен для использования в примерах документации без необходимости получения предварительного разрешения. Это не сервис; не рекомендуется его использование для тестирования и мониторинга.', '', '[84,1648][1000,1859]'), ('Este dominio está destinado al uso en ejemplos de documentación sin necesidad de permiso. Esto no es un servicio; evitar utilizarlo para realizar pruebas o monitoreos.', '', '[0,0][0,0]'), ('', 'Learn more', '[0,0][0,0]'), ('Learn more', '', '[0,0][0,0]'), ('', 'Open the home page', '[0,63][126,210]'), ('', 'Connection is secure', '[136,105][199,168]'), ('example.com/?wnt222=chrome', '', '[210,71][671,202]'), ('', 'New tab', '[692,63][828,210]'), ('', 'Switch or close tabs', '[828,63][954,210]'), ('', 'Customize and control Google Chrome', '[954,63][1080,210]')]
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input tap 1017 136'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('', 'Forward', '[388,78][523,204]'), ('', 'Bookmark', '[523,78][658,204]'), ('', 'Download', '[658,78][793,204]'), ('', 'Page info', '[793,78][929,204]'), ('', 'Refresh', '[929,78][1065,204]'), ('New tab', '', '[493,204][680,330]'), ('New Incognito tab', '', '[430,330][1023,456]'), ('History', '', '[493,485][659,611]'), ('Clear browsing data', '', '[493,611][898,737]'), ('Downloads', '', '[493,766][735,892]'), ('Bookmarks', '', '[493,892][737,1018]'), ('Recent tabs', '', '[493,1018][747,1144]'), ('Share…', 'Share…', '[388,1173][1065,1299]'), ('Find in page', '', '[493,1299][751,1425]'), ('Translate…', '', '[493,1425][727,1551]'), ('Add to Home screen', '', '[493,1551][906,1677]'), ('Desktop site', 'Turn on Request desktop site', '[388,1677][918,1740]')]
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input tap 726 1236'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Sharing link', '', '[42,755][285,818]'), ('Example Domain', '', '[231,904][901,955]'), ('https://example.com/?wnt222=chrome', '', '[231,955][890,1006]'), ('', 'Copy', '[901,892][1027,1018]'), ('Long Screenshot', '', '[42,1070][399,1206]'), ('Print', '', '[409,1070][640,1206]'), ('Send to devices', '', '[650,1070][992,1206]'), ('QR Code', '', '[1002,1070][1080,1206]'), ('No recommended people to share with', '', '[0,1379][1080,1430]'), ('Quick Share', '', '[11,1745][205,1788]'), ('my-feed', '', '[227,1745][421,1788]'), ('Chrome', '', '[443,1745][637,1788]'), ('Drive', '', '[659,1745][853,1788]'), ('Copy to clipboard', '', '[659,1788][853,1831]'), ('Drive', '', '[875,1745][1069,1788]')]
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input tap 324 1766'
++ adb -s emulator-5596 shell 'dumpsys activity activities'
++ adb -s emulator-5596 shell 'dumpsys activity activities'
+RESUMED: 
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Example Domain', '', '[0,210][1080,1859]'), ('This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.', '', '[84,700][1000,971]'), ('هذا النطاق مُخصص للاستخدام في أمثلة التوثيق دون الحاجة إلى إذن. هذه ليست خدمة، يُرجى تجنب الاعتماد عليها لأغراض الاختبار والمراقبة.', '', '[84,1010][1000,1189]'), ('该域名仅用于文档示例，无需获得许可。这并非一项服务，请勿将其用于测试和监控目的。', '', '[84,1223][1000,1344]'), ('L’usage de ce domaine est réservé à des exemples de documentation, sans autorisation préalable. Il ne s’agit pas d’un service ; son utilisation à des fins de test ou de surveillance est à éviter.', '', '[84,1378][1000,1617]'), ('Данный домен предназначен для использования в примерах документации без необходимости получения предварительного разрешения. Это не сервис; не рекомендуется его использование для тестирования и мониторинга.', '', '[84,1648][1000,1859]'), ('Este dominio está destinado al uso en ejemplos de documentación sin necesidad de permiso. Esto no es un servicio; evitar utilizarlo para realizar pruebas o monitoreos.', '', '[0,0][0,0]'), ('', 'Learn more', '[0,0][0,0]'), ('Learn more', '', '[0,0][0,0]'), ('', 'Open the home page', '[0,63][126,210]'), ('', 'Connection is secure', '[136,105][199,168]'), ('example.com/?wnt222=chrome', '', '[210,71][671,202]'), ('', 'New tab', '[692,63][828,210]'), ('', 'Switch or close tabs', '[828,63][954,210]'), ('', 'Customize and control Google Chrome', '[954,63][1080,210]')]
+CHROME ROW: {"id": 3, "originalUrl": "https://example.com/?wnt222=chrome", "canonicalUrl": "https://example.com/?wnt222=chrome", "host": "example.com", "capturedAt": 1793477064482, "archivedAt": null, "deletedAt": null, "lastOpenedAt": null, "title": "Example Domain", "description": null, "imageUrl": null, "siteName": null, "previewStatus": "ready", "imagePath": null, "revision": 0}
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Warning: Activity not started, its current task has been brought to the front
+Status: ok
+LaunchState: HOT
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 408
+WaitTime: 410
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
+Traceback (most recent call last):
+  File "<stdin>", line 8, in <module>
+  File "runs/WNT-222-smoke.py", line 41, in wait_for
+    raise AssertionError('Timed out waiting for emulator state')
+AssertionError: Timed out waiting for emulator state
+Previous Main lookup retained a lower scroll anchor; relaunch to inspect newest capture.
++ adb -s emulator-5596 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 792
+WaitTime: 794
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Your inbox · newest first', '', '[42,252][437,305]'), ('example.com', '', '[84,410][348,473]'), ('Example Domain', '', '[84,494][419,557]'), ('https://example.com/?wnt222=chrome', '', '[84,578][656,620]'), ('Saved Oct 31, 2026 5:04 PM', '', '[84,641][513,683]'), ('Preview saved · available offline', '', '[84,704][559,746]'), ('Archive', '', '[671,804][795,857]'), ('Delete', '', '[859,804][964,857]'), ('127.0.0.1', '', '[84,1009][270,1072]'), ('http://127.0.0.1/private', '', '[84,1093][551,1156]'), ('Saved Oct 31, 2026 5:02 PM', '', '[84,1177][513,1219]'), ('Preview unavailable · link saved', '', '[84,1240][552,1282]'), ('Retry preview', '', '[116,1340][339,1393]'), ('Archive', '', '[671,1487][795,1540]'), ('Delete', '', '[859,1487][964,1540]'), ('my-feed', '', '[43,110][248,184]'), ('Search', '', '[697,121][811,174]'), ('Paste link', '', '[875,121][1037,174]'), ('Main', '', '[136,1773][210,1815]'), ('Grouped', '', '[476,1773][603,1815]'), ('Archived', '', '[841,1773][973,1815]')]
+PASS: real Chrome Share -> automatic return to Chrome -> persisted URL visible in Main on restart
++ adb -s emulator-5596 shell 'am start -W -a android.intent.action.VIEW -d '"'"'https://www.youtube.com/watch?v=jNQXAC9IVRw'"'"' -p com.google.android.youtube'
+Starting: Intent { act=android.intent.action.VIEW dat=https://www.youtube.com/... pkg=com.google.android.youtube }
+Status: ok
+LaunchState: UNKNOWN (0)
+Activity: com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity
+WaitTime: 879
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('YouTube', '', '[0,210][1080,1859]'), ('YouTube Video Player', '', '[0,336][1080,945]'), ('TAP TO UNMUTE', '', '[0,336][504,527]'), ('', 'Open the home page', '[0,63][126,210]'), ('', 'Connection is secure', '[136,105][199,168]'), ('m.youtube.com/watch?v=jNQXAC9IVRw', '', '[210,71][671,202]'), ('', 'New tab', '[692,63][828,210]'), ('', 'Switch or close tabs', '[828,63][954,210]'), ('', 'Customize and control Google Chrome', '[954,63][1080,210]')]
+YouTube deep link led to Chrome; inspect native launcher before claiming source-app coverage.
++ adb -s emulator-5596 shell 'am start -W -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -p com.google.android.youtube'
+Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] pkg=com.google.android.youtube }
+Status: ok
+LaunchState: WARM
+Activity: com.google.android.youtube/com.google.android.apps.youtube.app.watchwhile.MainActivity
+TotalTime: 219
+WaitTime: 220
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('', 'YouTube', '[0,63][320,189]'), ('', 'Search', '[848,63][975,189]'), ('', 'More options', '[975,63][1080,189]'), ('Update available', '', '[342,1039][738,1142]'), ('You are using an old version of YouTube. Please update to get important bug fixes and improvements. It typically takes less than 1 minute.', '', '[127,1142][953,1405]'), ('', 'Home', '[0,1731][270,1857]'), ('Home', '', '[97,1813][174,1843]'), ('', 'Shorts', '[270,1731][540,1857]'), ('Shorts', '', '[364,1813][446,1843]'), ('', 'Subscriptions', '[540,1731][810,1857]'), ('Subscriptions', '', '[593,1813][757,1843]'), ('', 'Library', '[810,1731][1080,1857]'), ('Library', '', '[903,1813][988,1843]')]
++ adb -s emulator-5596 shell 'dumpsys activity activities'
+    topResumedActivity=ActivityRecord{6c35769 u0 com.google.android.youtube/com.google.android.apps.youtube.app.watchwhile.InternalMainActivity t107}
++ adb -s emulator-5596 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 799
+WaitTime: 801
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input tap 370 599'
++ adb -s emulator-5596 shell 'dumpsys activity activities'
+PASS: actual card tap opens Chrome; only lastOpenedAt changed: {"id": 3, "originalUrl": "https://example.com/?wnt222=chrome", "canonicalUrl": "https://example.com/?wnt222=chrome", "host": "example.com", "capturedAt": 1793477064482, "archivedAt": null, "deletedAt": null, "lastOpenedAt": 1793477159582, "title": "Example Domain", "description": null, "imageUrl": null, "siteName": null, "previewStatus": "ready", "imagePath": null, "revision": 0} FOREGROUND:     topResumedActivity=ActivityRecord{3c160df u0 com.android.chrome/org.chromium.chrome.browser.ChromeTabbedActivity t104}
++ adb -s emulator-5596 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 850
+WaitTime: 851
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input keyevent KEYCODE_BACK'
++ adb -s emulator-5596 shell 'dumpsys activity activities'
+PASS: verified API35 topResumedActivity after root Back:     topResumedActivity=ActivityRecord{3c160df u0 com.android.chrome/org.chromium.chrome.browser.ChromeTabbedActivity t104}
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Status: ok
+LaunchState: WARM
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 134
+WaitTime: 136
+Complete
+
