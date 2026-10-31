@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="org.wastingnotime.myfeed.InboxFlowTest" tests="8" failures="0" errors="0" skipped="0" time="16.434" timestamp="2026-10-31T18:54:57" hostname="localhost">
+  <properties>
+    <property name="device" value="my-feed-wnt-221(AVD) - 15" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="failedPreviewKeepsUrlAndRetryReturnsToPending" classname="org.wastingnotime.myfeed.InboxFlowTest" time="1.158" />
+  <testcase name="swipeRightArchivesAndSwipeLeftDeletesWithUndo" classname="org.wastingnotime.myfeed.InboxFlowTest" time="1.718" />
+  <testcase name="groupedAndArchivedRenderSimilarityFallbackAndCaptureDateSections" classname="org.wastingnotime.myfeed.InboxFlowTest" time="1.284" />
+  <testcase name="repeatedSharesRestoreInboxPreserveOriginalAndReturnWithoutConfirmation" classname="org.wastingnotime.myfeed.InboxFlowTest" time="0.631" />
+  <testcase name="invalidSharedTextReturnsWithoutWriting" classname="org.wastingnotime.myfeed.InboxFlowTest" time="5.313" />
+  <testcase name="pasteRecreateOpenArchiveDeleteUndoAndRestore" classname="org.wastingnotime.myfeed.InboxFlowTest" time="2.171" />
+  <testcase name="receiverRecreationDuringCommitDoesNotCaptureTwice" classname="org.wastingnotime.myfeed.InboxFlowTest" time="0.431" />
+  <testcase name="scopedSearchReactsToLifecycleMetadataAndRecreationAndBackReturnsToFeed" classname="org.wastingnotime.myfeed.InboxFlowTest" time="3.174" />
+</testsuite>

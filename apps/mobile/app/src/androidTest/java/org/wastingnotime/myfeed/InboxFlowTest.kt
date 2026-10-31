@@ -14,6 +14,7 @@ import androidx.work.WorkInfo
 import androidx.work.testing.WorkManagerTestInitHelper
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -93,7 +94,7 @@ class InboxFlowTest {
         compose.onNode(hasText("Restore") and hasClickAction()).performClick()
         awaitRows { it.single().archivedAt == null }
         compose.onNodeWithText("Grouped").performClick()
-        compose.onNodeWithText("Grouping is coming. For now, this shows the same inbox as Main.").assertIsDisplayed()
+        compose.onNodeWithTag("group-${captured.id}").assertIsDisplayed()
         compose.onNodeWithText(original).assertIsDisplayed()
     }
 
@@ -183,5 +184,93 @@ class InboxFlowTest {
         compose.onNodeWithText("Undo").performClick()
         awaitRows { it.single().deletedAt == null }
         compose.onNodeWithText(original).assertIsDisplayed()
+    }
+
+    @Test fun groupedAndArchivedRenderSimilarityFallbackAndCaptureDateSections() {
+        val day = java.util.Calendar.getInstance().apply {
+            set(2026, 0, 1, 0, 0, 0); set(java.util.Calendar.MILLISECOND, 0)
+        }.timeInMillis
+        fun row(id: Long, title: String?, at: Long = day + id) = SavedLink(id = id,
+            originalUrl = "https://example.com/$id", canonicalUrl = "https://example.com/$id",
+            host = "example.com", capturedAt = at, title = title, previewStatus = "ready")
+        runBlocking {
+            dao.insert(row(1, "CAFÉ Android"))
+            dao.insert(row(2, "cafe android guide"))
+            dao.insert(row(3, null))
+            dao.insert(row(4, "Café Android", day - 1).copy(archivedAt = day + 999))
+            dao.insert(row(5, "Café Android").copy(archivedAt = day + 100))
+            dao.insert(row(6, "deleted").copy(deletedAt = day + 100))
+        }
+        awaitRows { it.size == 6 }
+        compose.onNodeWithText("Grouped").performClick()
+        compose.waitUntil(10_000) { compose.onAllNodesWithTag("group-3").fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("group-3").assertTextEquals("example.com · Untitled links · 1")
+        compose.onNodeWithTag("feed-list").performScrollToNode(hasTestTag("group-2"))
+        compose.onNodeWithTag("group-2").assertTextEquals("example.com · cafe android guide · 2")
+        listOf(1L, 2L, 3L).forEach { id ->
+            compose.onNodeWithTag("feed-list").performScrollToNode(hasTestTag("link-$id"))
+            compose.onAllNodesWithTag("link-$id").assertCountEquals(1)
+        }
+        compose.onNodeWithText("Archived").performClick()
+        compose.onNodeWithTag("feed-list").performScrollToNode(hasText("Captured 2026-01-01"))
+        compose.onNodeWithTag("feed-list").performScrollToNode(hasTestTag("group-5"))
+        compose.onNodeWithTag("group-5").assertTextEquals("example.com · Café Android · 1")
+        compose.onNodeWithTag("feed-list").performScrollToNode(hasText("Captured 2025-12-31"))
+        compose.onNodeWithTag("feed-list").performScrollToNode(hasTestTag("link-4"))
+        compose.onNodeWithTag("link-4").assertIsDisplayed()
+        compose.onNodeWithTag("link-6").assertDoesNotExist()
+    }
+
+    @Test fun scopedSearchReactsToLifecycleMetadataAndRecreationAndBackReturnsToFeed() {
+        runBlocking {
+            dao.insert(SavedLink(id = 1, originalUrl = "https://example.com/needle", canonicalUrl = "https://example.com/needle",
+                host = "example.com", capturedAt = 100, previewStatus = "pending"))
+            dao.insert(SavedLink(id = 2, originalUrl = "https://example.com/archive", canonicalUrl = "https://example.com/archive",
+                host = "example.com", capturedAt = 200, description = "needle in description", archivedAt = 300, previewStatus = "ready"))
+            dao.insert(SavedLink(id = 3, originalUrl = "https://example.com/deleted", canonicalUrl = "https://example.com/deleted",
+                host = "example.com", capturedAt = 400, title = "needle", deletedAt = 500))
+        }
+        awaitRows { it.size == 3 }
+        compose.onNodeWithText("Search").performClick()
+        compose.onNodeWithTag("scope-Inbox").assertIsSelected()
+        compose.onNodeWithText("Search saved links").performTextInput("NEEDLE")
+        Espresso.closeSoftKeyboard()
+        compose.onNodeWithText("1 results · Inbox · newest first").assertIsDisplayed()
+        compose.onNodeWithTag("link-1").assertIsDisplayed()
+        compose.onNode(hasText("Archive") and hasClickAction()).performClick()
+        awaitRows { it.first { row -> row.id == 1L }.archivedAt != null }
+        compose.onNodeWithText("No matching links in Inbox.").assertIsDisplayed()
+        compose.onNodeWithTag("scope-Archived").performClick()
+        compose.onNodeWithText("2 results · Archived · newest first").assertIsDisplayed()
+        compose.activityRule.scenario.recreate()
+        compose.onNodeWithText("Search saved links").assertTextContains("NEEDLE")
+        compose.onNodeWithTag("scope-Archived").assertIsSelected()
+        compose.onNodeWithTag("scope-All").performClick()
+        compose.onNodeWithTag("feed-list").performScrollToNode(hasTestTag("link-1"))
+        compose.onNodeWithTag("link-1").assertIsDisplayed()
+        runBlocking { dao.act(1, LinkAction.Delete, 600) }
+        compose.waitUntil(10_000) { compose.onAllNodesWithTag("link-1").fetchSemanticsNodes().isEmpty() }
+        compose.onNodeWithText("1 results · All · newest first").assertIsDisplayed()
+        compose.onNodeWithText("Search saved links").performTextReplacement("Café 東京")
+        Espresso.closeSoftKeyboard()
+        compose.onNodeWithText("No matching links in All.").assertIsDisplayed()
+        runBlocking {
+            dao.capture(requireNotNull(org.wastingnotime.myfeed.data.UrlCapture.normalize("https://example.com/needle")), 700)
+            dao.finishPreview(1, "CAFÉ 東京", null, null, null, null, "ready")
+        }
+        compose.waitUntil(10_000) { compose.onAllNodesWithTag("link-1").fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("link-1").assertIsDisplayed()
+        Espresso.pressBack()
+        compose.onNodeWithText("Search").assertIsDisplayed()
+        compose.onNodeWithText("Grouped").performClick()
+        compose.onNodeWithText("Search").performClick()
+        compose.onNodeWithTag("scope-Inbox").assertIsSelected()
+        compose.onNodeWithText("Close search").performClick()
+        compose.onNodeWithText("Archived").performClick()
+        compose.onNodeWithText("Search").performClick()
+        compose.onNodeWithTag("scope-Archived").assertIsSelected()
+        compose.onNodeWithText("Close search").performClick()
+        Espresso.pressBack()
+        compose.onNodeWithText("Your inbox · newest first").assertIsDisplayed()
     }
 }

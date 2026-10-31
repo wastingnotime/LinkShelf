@@ -19,23 +19,27 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import org.wastingnotime.myfeed.data.LinkAction
 import org.wastingnotime.myfeed.data.SavedLink
+import org.wastingnotime.myfeed.data.FeedDestination
+import org.wastingnotime.myfeed.data.LinkGroup
+import org.wastingnotime.myfeed.data.SearchScope
 import java.text.DateFormat
 import java.util.Date
-
-private enum class Destination { Main, Grouped, Archived }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedScreen(model: FeedViewModel, open: (SavedLink) -> Unit) {
     val state by model.state.collectAsStateWithLifecycle()
-    var destination by rememberSaveable { mutableStateOf(Destination.Main) }
+    val selection by model.selection.collectAsStateWithLifecycle()
+    val destination = selection.destination
     var adding by rememberSaveable { mutableStateOf(false) }
     val snackbar = remember { SnackbarHostState() }
     LaunchedEffect(model) {
@@ -47,52 +51,88 @@ fun FeedScreen(model: FeedViewModel, open: (SavedLink) -> Unit) {
             if (result == SnackbarResult.ActionPerformed) notice.undo?.let(model::undo)
         }
     }
-    BackHandler(destination != Destination.Main) { destination = Destination.Main }
+    LifecycleResumeEffect(model) { model.refresh(); onPauseOrDispose {} }
+    BackHandler(selection.searching || destination != FeedDestination.Main) {
+        if (selection.searching) model.closeSearch() else model.navigate(FeedDestination.Main)
+    }
     MaterialTheme(colorScheme = lightColorScheme(primary = Color(0xFF315C4B),
         background = Color(0xFFF6F7F3), surface = Color(0xFFF6F7F3))) {
         Scaffold(
             topBar = { TopAppBar(title = { Text("my-feed") }, actions = {
+                TextButton(onClick = { if (selection.searching) model.closeSearch() else model.startSearch() }) {
+                    Text(if (selection.searching) "Close search" else "Search")
+                }
                 TextButton(onClick = { adding = true }) { Text("Paste link") }
             }) },
             snackbarHost = { SnackbarHost(snackbar) },
             bottomBar = {
                 NavigationBar {
-                    Destination.entries.forEach { tab ->
+                    FeedDestination.entries.forEach { tab ->
                         NavigationBarItem(selected = destination == tab,
-                            onClick = { destination = tab },
+                            onClick = { model.closeSearch(); model.navigate(tab) },
                             icon = { Text(when (tab) {
-                                Destination.Main -> "▤"
-                                Destination.Grouped -> "▦"
-                                Destination.Archived -> "▣"
+                                FeedDestination.Main -> "▤"
+                                FeedDestination.Grouped -> "▦"
+                                FeedDestination.Archived -> "▣"
                             }) }, label = { Text(tab.name) })
                     }
                 }
             },
         ) { padding ->
-            val links = state.links.filter {
-                if (destination == Destination.Archived) it.archivedAt != null else it.archivedAt == null
-            }
+            val links = state.content.links
+            val showing = state.selection
             Column(Modifier.fillMaxSize().padding(padding)) {
-                Text(if (destination == Destination.Archived) "Saved for later, out of your inbox"
+                if (selection.searching) {
+                    OutlinedTextField(value = selection.query, onValueChange = model::search,
+                        label = { Text("Search saved links") }, singleLine = true,
+                        supportingText = { Text("Title, description or URL") },
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp))
+                    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        SearchScope.entries.forEach { scope ->
+                            FilterChip(selected = selection.scope == scope, onClick = { model.scope(scope) },
+                                label = { Text(scope.name) }, modifier = Modifier.testTag("scope-${scope.name}"))
+                        }
+                    }
+                }
+                Text(if (showing.searching) "${links.size} results · ${showing.scope.name} · newest first"
+                    else if (showing.destination == FeedDestination.Archived) "Archived · grouped by capture date and similarity"
                     else "Your inbox · newest first", Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     style = MaterialTheme.typography.titleSmall)
-                if (destination == Destination.Grouped) {
-                    Text("Grouping is coming. For now, this shows the same inbox as Main.",
-                        Modifier.padding(16.dp), style = MaterialTheme.typography.bodyMedium)
-                }
                 when {
                     state.loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
                     links.isEmpty() -> Box(Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
-                        Text(if (destination == Destination.Archived) "No archived links yet."
+                        Text(if (showing.searching) "No matching links in ${showing.scope.name}."
+                            else if (showing.destination == FeedDestination.Archived) "No archived links yet."
                             else "A quiet inbox. Share a link to my-feed from another app, or paste one here.")
                     }
-                    else -> LazyColumn(contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        items(links, key = { it.id }) { link ->
-                            LinkCard(link, open = { open(link) }, act = { model.act(link.id, it) },
-                                retry = { model.retryPreview(link.id) })
+                    // A different view/query starts at its newest result, including group/date headings.
+                    else -> key(showing) {
+                        LazyColumn(modifier = Modifier.testTag("feed-list"), contentPadding = PaddingValues(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                            fun group(group: LinkGroup) {
+                                item(key = "group-${group.representative.id}") { GroupHeading(group) }
+                                items(group.links, key = { it.id }) { link ->
+                                    LinkCard(link, open = { open(link) }, act = { model.act(link.id, it) },
+                                        retry = { model.retryPreview(link.id) })
+                                }
+                            }
+                            when {
+                                showing.searching || showing.destination == FeedDestination.Main ->
+                                    items(links, key = { it.id }) { link ->
+                                        LinkCard(link, open = { open(link) }, act = { model.act(link.id, it) },
+                                            retry = { model.retryPreview(link.id) }, showScope = showing.searching)
+                                    }
+                                showing.destination == FeedDestination.Grouped -> state.content.groups.forEach { group(it) }
+                                else -> state.content.days.forEach { day ->
+                                    item(key = "date-${day.day}") {
+                                        Text("Captured ${day.day}", style = MaterialTheme.typography.titleMedium)
+                                    }
+                                    day.groups.forEach { group(it) }
+                                }
+                            }
                         }
                     }
                 }
@@ -117,9 +157,19 @@ fun FeedScreen(model: FeedViewModel, open: (SavedLink) -> Unit) {
     }
 }
 
+@Composable
+private fun GroupHeading(group: LinkGroup) {
+    val link = group.representative
+    val title = if (!group.hasTitleKeywords)
+        "Untitled links" else link.title.orEmpty()
+    Text("${link.host} · $title · ${group.links.size}",
+        modifier = Modifier.testTag("group-${link.id}"), style = MaterialTheme.typography.titleSmall,
+        maxLines = 2, overflow = TextOverflow.Ellipsis)
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun LinkCard(link: SavedLink, open: () -> Unit, act: (LinkAction) -> Unit, retry: () -> Unit) {
+private fun LinkCard(link: SavedLink, open: () -> Unit, act: (LinkAction) -> Unit, retry: () -> Unit, showScope: Boolean = false) {
     val dismiss = rememberSwipeToDismissBoxState()
     val currentAction by rememberUpdatedState(act)
     LaunchedEffect(dismiss.settledValue) {
@@ -142,20 +192,23 @@ private fun LinkCard(link: SavedLink, open: () -> Unit, act: (LinkAction) -> Uni
                 }
             }
         }) {
-        Card(onClick = open, modifier = Modifier.fillMaxWidth()) {
+        Card(onClick = open, modifier = Modifier.fillMaxWidth().testTag("link-${link.id}")) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 val context = LocalContext.current
+                if (showScope) Text(if (link.archivedAt == null) "Inbox" else "Archived",
+                    style = MaterialTheme.typography.labelMedium)
                 val image by produceState<android.graphics.Bitmap?>(null, link.imagePath) {
                     value = withContext(Dispatchers.IO) { link.imagePath?.let { PreviewImages(context).load(it) } }
                 }
                 image?.let { Image(it.asImageBitmap(), contentDescription = null,
                     modifier = Modifier.fillMaxWidth().height(180.dp), contentScale = ContentScale.Crop) }
                 Text(link.siteName?.let { "$it · ${link.host}" } ?: link.host, style = MaterialTheme.typography.titleMedium)
-                Text(link.title ?: link.originalUrl, maxLines = 3, overflow = TextOverflow.Ellipsis,
+                val title = link.title?.takeIf { it.isNotBlank() }
+                Text(title ?: link.originalUrl, maxLines = 3, overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.bodyLarge)
                 link.description?.let { Text(it, maxLines = 3, overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.bodyMedium) }
-                if (link.title != null) Text(link.originalUrl, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                if (title != null) Text(link.originalUrl, maxLines = 1, overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.bodySmall)
                 Text("Saved " + DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
                     .format(Date(link.capturedAt)), style = MaterialTheme.typography.labelMedium)
