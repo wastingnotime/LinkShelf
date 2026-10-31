@@ -1,0 +1,143 @@
++ adb -s emulator-5590 shell 'getprop ro.build.version.release'
++ adb -s emulator-5590 shell 'getprop ro.build.version.sdk'
+15
+ 35
+
++ adb -s emulator-5590 install -r /home/henrique/.wnt/worktrees/wastingnotime/my-feed/WNT-219-7b568dd4/apps/mobile/app/build/outputs/apk/debug/app-debug.apk
+Performing Streamed Install
+Success
+
++ adb -s emulator-5590 shell 'pm clear org.wastingnotime.myfeed'
+Success
+
++ adb -s emulator-5590 shell 'settings get global airplane_mode_on'
++ adb -s emulator-5590 shell 'cmd connectivity airplane-mode enable'
++ adb -s emulator-5590 shell 'svc wifi disable'
++ adb -s emulator-5590 shell 'svc data disable'
++ adb -s emulator-5590 shell 'settings get global airplane_mode_on'
++ adb -s emulator-5590 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT '"'"'Offline shared text HTTPS://Example.com:443/offline?q=1#original'"'"' org.wastingnotime.myfeed/.ShareActivity'
++ adb -s emulator-5590 shell 'dumpsys activity activities'
++ adb -s emulator-5590 shell 'dumpsys activity activities'
++ adb -s emulator-5590 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5590 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db
++ adb -s emulator-5590 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db-wal
++ adb -s emulator-5590 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db-shm
+[
+  {
+    "id": 1,
+    "originalUrl": "HTTPS://Example.com:443/offline?q=1#original",
+    "canonicalUrl": "https://example.com/offline?q=1",
+    "host": "example.com",
+    "capturedAt": 1793461019883,
+    "archivedAt": null,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "fallback",
+    "revision": 0
+  }
+]
++ adb -s emulator-5590 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
++ adb -s emulator-5590 shell 'uiautomator dump /sdcard/my-feed-wnt-219.xml'
++ adb -s emulator-5590 exec-out cat /sdcard/my-feed-wnt-219.xml
++ adb -s emulator-5590 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT '"'"'https://second.example/story#original'"'"' org.wastingnotime.myfeed/.ShareActivity'
++ adb -s emulator-5590 shell 'dumpsys activity activities'
++ adb -s emulator-5590 shell 'dumpsys activity activities'
++ adb -s emulator-5590 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
++ adb -s emulator-5590 shell 'uiautomator dump /sdcard/my-feed-wnt-219.xml'
++ adb -s emulator-5590 exec-out cat /sdcard/my-feed-wnt-219.xml
++ adb -s emulator-5590 shell 'uiautomator dump /sdcard/my-feed-wnt-219.xml'
++ adb -s emulator-5590 exec-out cat /sdcard/my-feed-wnt-219.xml
++ adb -s emulator-5590 shell 'input tap 733 767'
++ adb -s emulator-5590 shell 'uiautomator dump /sdcard/my-feed-wnt-219.xml'
++ adb -s emulator-5590 exec-out cat /sdcard/my-feed-wnt-219.xml
++ adb -s emulator-5590 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5590 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db
++ adb -s emulator-5590 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db-wal
++ adb -s emulator-5590 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db-shm
+[
+  {
+    "id": 2,
+    "originalUrl": "https://second.example/story#original",
+    "canonicalUrl": "https://second.example/story",
+    "host": "second.example",
+    "capturedAt": 1793461024436,
+    "archivedAt": 1793461028962,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "fallback",
+    "revision": 1
+  },
+  {
+    "id": 1,
+    "originalUrl": "HTTPS://Example.com:443/offline?q=1#original",
+    "canonicalUrl": "https://example.com/offline?q=1",
+    "host": "example.com",
+    "capturedAt": 1793461019883,
+    "archivedAt": null,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "fallback",
+    "revision": 0
+  }
+]
++ adb -s emulator-5590 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT '"'"'HTTPS://SECOND.EXAMPLE:443/story#duplicate'"'"' org.wastingnotime.myfeed/.ShareActivity'
++ adb -s emulator-5590 shell 'dumpsys activity activities'
++ adb -s emulator-5590 shell 'dumpsys activity activities'
++ adb -s emulator-5590 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5590 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db
++ adb -s emulator-5590 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db-wal
++ adb -s emulator-5590 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db-shm
+[
+  {
+    "id": 2,
+    "originalUrl": "https://second.example/story#original",
+    "canonicalUrl": "https://second.example/story",
+    "host": "second.example",
+    "capturedAt": 1793461031376,
+    "archivedAt": null,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "fallback",
+    "revision": 2
+  },
+  {
+    "id": 1,
+    "originalUrl": "HTTPS://Example.com:443/offline?q=1#original",
+    "canonicalUrl": "https://example.com/offline?q=1",
+    "host": "example.com",
+    "capturedAt": 1793461019883,
+    "archivedAt": null,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "fallback",
+    "revision": 0
+  }
+]
++ adb -s emulator-5590 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
++ adb -s emulator-5590 shell 'uiautomator dump /sdcard/my-feed-wnt-219.xml'
++ adb -s emulator-5590 exec-out cat /sdcard/my-feed-wnt-219.xml
++ adb -s emulator-5590 exec-out screencap -p
+PASS: offline SEND, no confirmation, process restart, newest-first Main, archive and duplicate restore
++ adb -s emulator-5590 shell 'cmd connectivity airplane-mode disable'
++ adb -s emulator-5590 shell 'svc wifi enable'
++ adb -s emulator-5590 shell 'svc data enable'
