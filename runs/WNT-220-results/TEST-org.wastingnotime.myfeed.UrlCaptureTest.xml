@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.wastingnotime.myfeed.UrlCaptureTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-31T18:10:49.403Z" hostname="chaos" time="0.025">
+  <properties/>
+  <testcase name="skipsInvalidCandidateAndBoundsInput" classname="org.wastingnotime.myfeed.UrlCaptureTest" time="0.009"/>
+  <testcase name="queriesRemainByteForByteIncludingTrackingAndOrder" classname="org.wastingnotime.myfeed.UrlCaptureTest" time="0.0"/>
+  <testcase name="rejectsCredentialsUnsafeSchemesMalformedAuthoritiesAndEscapes" classname="org.wastingnotime.myfeed.UrlCaptureTest" time="0.0"/>
+  <testcase name="normalizesOnlyDocumentedIdentityComponents" classname="org.wastingnotime.myfeed.UrlCaptureTest" time="0.0"/>
+  <testcase name="supportsInternationalHostAndIpv6" classname="org.wastingnotime.myfeed.UrlCaptureTest" time="0.016"/>
+  <testcase name="originalKeepsFragmentCaseAndDefaultPort" classname="org.wastingnotime.myfeed.UrlCaptureTest" time="0.0"/>
+  <testcase name="extractsFirstValidLinkFromProseAndDropsWrappingPunctuation" classname="org.wastingnotime.myfeed.UrlCaptureTest" time="0.0"/>
+  <testcase name="balancedParenthesesInsidePathSurvive" classname="org.wastingnotime.myfeed.UrlCaptureTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

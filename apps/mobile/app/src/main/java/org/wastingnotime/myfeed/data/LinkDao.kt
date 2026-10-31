@@ -25,7 +25,8 @@ abstract class LinkDao {
     abstract suspend fun insert(link: SavedLink): Long
 
     @Query("""UPDATE saved_links SET capturedAt = MAX(capturedAt, :now),
-        archivedAt = NULL, deletedAt = NULL, revision = revision + 1 WHERE canonicalUrl = :canonical""")
+        archivedAt = NULL, deletedAt = NULL,
+        previewStatus = CASE WHEN previewStatus = 'failed' THEN 'pending' ELSE previewStatus END, revision = revision + 1 WHERE canonicalUrl = :canonical""")
     abstract suspend fun refresh(canonical: String, now: Long)
 
     @Transaction
@@ -56,6 +57,19 @@ abstract class LinkDao {
     // Compare-and-set prevents an old snackbar from reversing a newer capture/action.
     suspend fun undo(token: UndoToken): Boolean = changeState(
         token.id, token.archivedAt, token.deletedAt, token.expectedRevision) == 1
+
+    @Query("SELECT id FROM saved_links WHERE previewStatus = 'pending' AND deletedAt IS NULL")
+    abstract suspend fun pendingPreviews(): List<Long>
+
+    @Query("UPDATE saved_links SET previewStatus = 'pending' WHERE id = :id AND previewStatus = 'failed'")
+    abstract suspend fun retryPreview(id: Long): Int
+
+    // Enrichment never touches lifecycle revisions, ordering, identity, or opening history.
+    @Query("""UPDATE saved_links SET title = :title, description = :description,
+        siteName = :siteName, imageUrl = :imageUrl, imagePath = :imagePath, previewStatus = :status
+        WHERE id = :id AND previewStatus = 'pending' AND deletedAt IS NULL""")
+    abstract suspend fun finishPreview(id: Long, title: String?, description: String?, siteName: String?,
+        imageUrl: String?, imagePath: String?, status: String): Int
 
     @Query("UPDATE saved_links SET lastOpenedAt = :now WHERE id = :id")
     abstract suspend fun markOpened(id: Long, now: Long)

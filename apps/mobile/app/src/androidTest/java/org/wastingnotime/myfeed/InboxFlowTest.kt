@@ -7,6 +7,11 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.Lifecycle
 import androidx.room.withTransaction
+import androidx.work.WorkManager
+import androidx.work.Configuration
+import androidx.work.NetworkType
+import androidx.work.WorkInfo
+import androidx.work.testing.WorkManagerTestInitHelper
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
@@ -28,7 +33,13 @@ class InboxFlowTest {
     private val app get() = compose.activity.application as FeedApplication
     private val dao get() = app.database.links()
 
-    @Before fun clearInbox() = runBlocking(Dispatchers.IO) { app.database.clearAllTables() }
+    @Before fun clearInbox() = runBlocking(Dispatchers.IO) {
+        WorkManager.getInstance(app).cancelAllWork().result.get()
+        // Deterministic UI/lifecycle tests: no external requests, regardless of CI connectivity.
+        // Production scheduling and network recovery are exercised by runs/WNT-220-smoke.py.
+        WorkManagerTestInitHelper.initializeTestWorkManager(app, Configuration.Builder().build())
+        app.database.clearAllTables()
+    }
 
     private fun rows(): List<SavedLink> = runBlocking { dao.all() }
     private fun awaitRows(check: (List<SavedLink>) -> Boolean) {
@@ -136,6 +147,26 @@ class InboxFlowTest {
             compose.waitUntil(10_000) { receiver.state == Lifecycle.State.DESTROYED }
             assertTrue(rows().isEmpty())
         }
+    }
+
+    @Test fun failedPreviewKeepsUrlAndRetryReturnsToPending() {
+        val original = "https://example.com/preview-failure"
+        val saved = runBlocking { requireNotNull(app.repository.capture(original)) }
+        compose.waitUntil(10_000) {
+            WorkManager.getInstance(app).getWorkInfosForUniqueWork("preview-${saved.id}").get().any {
+                it.state == WorkInfo.State.ENQUEUED && it.constraints.requiredNetworkType == NetworkType.CONNECTED
+            }
+        }
+        runBlocking { dao.finishPreview(saved.id, null, null, null, null, null, "failed") }
+        awaitRows { it.single().previewStatus == "failed" }
+        compose.onNodeWithText(original).assertIsDisplayed()
+        compose.onNodeWithText("Preview unavailable · link saved").assertIsDisplayed()
+        compose.onNodeWithText("Retry preview").performClick()
+        awaitRows { it.single().previewStatus == "pending" }
+        compose.onNodeWithText("Saved offline · preview pending").assertIsDisplayed()
+        compose.onNodeWithText(original).assertIsDisplayed()
+        assertEquals(saved.id, rows().single().id)
+        assertEquals(saved.revision, rows().single().revision)
     }
 
     @Test fun swipeRightArchivesAndSwipeLeftDeletesWithUndo() {

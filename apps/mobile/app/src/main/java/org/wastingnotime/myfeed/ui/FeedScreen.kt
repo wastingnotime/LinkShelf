@@ -2,6 +2,13 @@ package org.wastingnotime.myfeed.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.wastingnotime.myfeed.preview.PreviewImages
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -84,7 +91,8 @@ fun FeedScreen(model: FeedViewModel, open: (SavedLink) -> Unit) {
                     else -> LazyColumn(contentPadding = PaddingValues(16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         items(links, key = { it.id }) { link ->
-                            LinkCard(link, open = { open(link) }, act = { model.act(link.id, it) })
+                            LinkCard(link, open = { open(link) }, act = { model.act(link.id, it) },
+                                retry = { model.retryPreview(link.id) })
                         }
                     }
                 }
@@ -111,7 +119,7 @@ fun FeedScreen(model: FeedViewModel, open: (SavedLink) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun LinkCard(link: SavedLink, open: () -> Unit, act: (LinkAction) -> Unit) {
+private fun LinkCard(link: SavedLink, open: () -> Unit, act: (LinkAction) -> Unit, retry: () -> Unit) {
     val dismiss = rememberSwipeToDismissBoxState()
     val currentAction by rememberUpdatedState(act)
     LaunchedEffect(dismiss.settledValue) {
@@ -136,12 +144,27 @@ private fun LinkCard(link: SavedLink, open: () -> Unit, act: (LinkAction) -> Uni
         }) {
         Card(onClick = open, modifier = Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(link.host, style = MaterialTheme.typography.titleMedium)
+                val context = LocalContext.current
+                val image by produceState<android.graphics.Bitmap?>(null, link.imagePath) {
+                    value = withContext(Dispatchers.IO) { link.imagePath?.let { PreviewImages(context).load(it) } }
+                }
+                image?.let { Image(it.asImageBitmap(), contentDescription = null,
+                    modifier = Modifier.fillMaxWidth().height(180.dp), contentScale = ContentScale.Crop) }
+                Text(link.siteName?.let { "$it · ${link.host}" } ?: link.host, style = MaterialTheme.typography.titleMedium)
                 Text(link.title ?: link.originalUrl, maxLines = 3, overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.bodyLarge)
+                link.description?.let { Text(it, maxLines = 3, overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.bodyMedium) }
+                if (link.title != null) Text(link.originalUrl, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.bodySmall)
                 Text("Saved " + DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
                     .format(Date(link.capturedAt)), style = MaterialTheme.typography.labelMedium)
-                Text("Link preview · available offline", style = MaterialTheme.typography.bodySmall)
+                Text(when (link.previewStatus) {
+                    "pending" -> "Saved offline · preview pending"
+                    "ready" -> "Preview saved · available offline"
+                    else -> "Preview unavailable · link saved"
+                }, style = MaterialTheme.typography.bodySmall)
+                if (link.previewStatus == "failed") TextButton(onClick = retry) { Text("Retry preview") }
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     TextButton(onClick = {
                         act(if (link.archivedAt == null) LinkAction.Archive else LinkAction.Restore)

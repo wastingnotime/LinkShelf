@@ -18,7 +18,8 @@ data class SavedLink(
     val description: String? = null,
     val imageUrl: String? = null,
     val siteName: String? = null,
-    val previewStatus: String = "fallback",
+    val previewStatus: String = "pending",
+    val imagePath: String? = null,
     val revision: Long = 0,
 )
 

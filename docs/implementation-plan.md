@@ -32,7 +32,8 @@ extraction. Main, Grouped, and Archived query the same collection.
   local/private/reserved destinations, validate every redirect and resolved
   address, bound redirect count, timeouts and response bytes. Apply equivalent
   controls to preview images. Never execute remote content. Initial slice uses
-  URL/host cards; metadata work follows separately.
+  URL/host cards; milestone 2 adds the enrichment policy documented in
+  apps/mobile/README.md.
 - Search offers explicit Inbox / Archived / All scopes and excludes deleted
   rows. Index title, description, and URL locally; evaluate Room FTS when adding it.
 

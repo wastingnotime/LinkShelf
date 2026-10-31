@@ -3,8 +3,8 @@
 Native Android personal link inbox: share a link, save it locally, and revisit it
 in a quiet visual feed. No account, backend, sync, or AI service is required.
 
-Milestone 1: native Kotlin/Compose application in [apps/mobile](apps/mobile).
-Share or paste a link, browse local fallback cards, archive/delete with undo,
+Milestones 1–2: native Kotlin/Compose application in [apps/mobile](apps/mobile).
+Share or paste a link, browse local cards with background previews, archive/delete with undo,
 and open links using Android. Capture needs no network or confirmation.
 
 - [Product requirements](docs/product-handoff.md)
@@ -16,7 +16,7 @@ Deletion uses soft delete with undo. Grouping uses deterministic domain and
 normalized title keywords in a later milestone. Duplicate shares refresh capture time and restore an
 archived/deleted item to the inbox; URL identity rules preserve meaningful queries.
 See [mobile behavior and build instructions](apps/mobile/README.md) and
-[WNT-219 validation](runs/WNT-219.md).
+[WNT-219 validation](runs/WNT-219.md) and [WNT-220 preview validation](runs/WNT-220.md).
 
 ```sh
 make mobile-test   # JVM URL and Room tests
@@ -25,6 +25,12 @@ make mobile-apk    # verified APK path
 ANDROID_SERIAL=emulator-5590 make mobile-connected-test
 ```
 
-Grouped currently shows Main's inbox with a visible fallback notice. Metadata,
-WorkManager retries, similarity grouping, and search belong to later milestones.
-There are no cross-repository dependencies, backend, login, or network permission.
+Preview enrichment uses WorkManager with persistent retries, bounded HTTP(S)
+metadata/image fetching, and local thumbnails. Offline capture never waits for
+previews; unavailable previews retain a URL/host card with a retry action. Private
+and reserved destinations can be saved/opened but are never fetched for previews.
+See the [network policy and limits](apps/mobile/README.md#preview-enrichment).
+
+Grouped currently shows Main's inbox with a visible fallback notice. Similarity
+grouping and search belong to later milestones. There are no cross-repository
+dependencies, backend, login, or sync.
