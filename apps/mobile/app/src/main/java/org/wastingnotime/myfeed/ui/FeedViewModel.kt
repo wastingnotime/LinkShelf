@@ -55,6 +55,8 @@ class FeedViewModel(private val app: FeedApplication) : ViewModel() {
         if (!repository.undo(token)) notify("Link changed since that action; kept its newer state")
     }
 
+    fun retryPreview(id: Long) = write { repository.retryPreview(id) }
+
     fun opened(id: Long) = write { repository.markOpened(id) }
 
     class Factory(private val app: FeedApplication) : ViewModelProvider.Factory {

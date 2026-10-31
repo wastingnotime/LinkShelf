@@ -1,0 +1,72 @@
++ adb -s emulator-5592 shell 'getprop ro.build.fingerprint'
+google/sdk_gphone64_x86_64/emu64xa:15/AE3A.240806.043/12960925:userdebug/dev-keys
+
++ adb -s emulator-5592 install -r /home/henrique/.wnt/worktrees/wastingnotime/my-feed/WNT-220-ca4b72de/apps/mobile/app/build/outputs/apk/debug/app-debug.apk
+Performing Streamed Install
+Success
+
++ adb -s emulator-5592 shell 'pm clear org.wastingnotime.myfeed'
+Success
+
++ adb -s emulator-5592 shell 'cmd connectivity airplane-mode enable'
++ adb -s emulator-5592 shell 'svc wifi disable'
++ adb -s emulator-5592 shell 'svc data disable'
++ adb -s emulator-5592 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT '"'"'Offline share https://ogp.me/'"'"' org.wastingnotime.myfeed/.ShareActivity'
+Starting: Intent { act=android.intent.action.SEND typ=text/plain cmp=org.wastingnotime.myfeed/.ShareActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: org.wastingnotime.myfeed/.ShareActivity
+TotalTime: 477
+WaitTime: 478
+Complete
+
++ adb -s emulator-5592 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5592 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
++ adb -s emulator-5592 shell 'uiautomator dump /sdcard/my-feed-wnt-220.xml'
++ adb -s emulator-5592 exec-out cat /sdcard/my-feed-wnt-220.xml
+OFFLINE CAPTURE AFTER PROCESS RESTART: {"id": 1, "originalUrl": "https://ogp.me/", "canonicalUrl": "https://ogp.me/", "host": "ogp.me", "capturedAt": 1793470284606, "archivedAt": null, "deletedAt": null, "lastOpenedAt": null, "title": null, "description": null, "imageUrl": null, "siteName": null, "previewStatus": "pending", "imagePath": null, "revision": 0}
+CONSTRAINED WORK: [{"id": "5e57f12d-f6c2-4cac-989d-d0b87cd15b69", "state": 0, "run_attempt_count": 0}]
++ adb -s emulator-5592 exec-out screencap -p
++ adb -s emulator-5592 shell 'cmd connectivity airplane-mode disable'
++ adb -s emulator-5592 shell 'svc wifi enable'
++ adb -s emulator-5592 shell 'svc data enable'
+ONLINE ENRICHMENT: {"id": 1, "originalUrl": "https://ogp.me/", "canonicalUrl": "https://ogp.me/", "host": "ogp.me", "capturedAt": 1793470284606, "archivedAt": null, "deletedAt": null, "lastOpenedAt": null, "title": "Open Graph protocol", "description": "The Open Graph protocol enables any web page to become a rich object in a social graph.", "imageUrl": "https://ogp.me/logo.png", "siteName": null, "previewStatus": "ready", "imagePath": "1.jpg", "revision": 0}
++ adb -s emulator-5592 exec-out run-as org.wastingnotime.myfeed cat files/previews/1.jpg
++ adb -s emulator-5592 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5592 shell 'svc wifi disable'
++ adb -s emulator-5592 shell 'svc data disable'
++ adb -s emulator-5592 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
++ adb -s emulator-5592 shell 'uiautomator dump /sdcard/my-feed-wnt-220.xml'
++ adb -s emulator-5592 exec-out cat /sdcard/my-feed-wnt-220.xml
++ adb -s emulator-5592 exec-out screencap -p
+PASS: cached title and JPEG available offline after process restart
++ adb -s emulator-5592 shell 'svc wifi enable'
++ adb -s emulator-5592 shell 'svc data enable'
++ adb -s emulator-5592 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT http://127.0.0.1/private org.wastingnotime.myfeed/.ShareActivity'
+Starting: Intent { act=android.intent.action.SEND typ=text/plain cmp=org.wastingnotime.myfeed/.ShareActivity (has extras) }
+Status: ok
+LaunchState: UNKNOWN (0)
+Activity: org.wastingnotime.myfeed/.ShareActivity
+WaitTime: 50
+Complete
+
++ adb -s emulator-5592 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5592 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
++ adb -s emulator-5592 shell 'uiautomator dump /sdcard/my-feed-wnt-220.xml'
++ adb -s emulator-5592 exec-out cat /sdcard/my-feed-wnt-220.xml
+BLOCKED TARGET FALLBACK: {"id": 2, "originalUrl": "http://127.0.0.1/private", "canonicalUrl": "http://127.0.0.1/private", "host": "127.0.0.1", "capturedAt": 1793470293817, "archivedAt": null, "deletedAt": null, "lastOpenedAt": null, "title": null, "description": null, "imageUrl": null, "siteName": null, "previewStatus": "failed", "imagePath": null, "revision": 0}
++ adb -s emulator-5592 exec-out screencap -p
++ adb -s emulator-5592 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT https://does-not-exist-wnt220.example.com/story org.wastingnotime.myfeed/.ShareActivity'
+Starting: Intent { act=android.intent.action.SEND typ=text/plain cmp=org.wastingnotime.myfeed/.ShareActivity (has extras) }
+Status: ok
+LaunchState: WARM
+Activity: org.wastingnotime.myfeed/.ShareActivity
+TotalTime: 66
+WaitTime: 68
+Complete
+
+DURABLE TRANSIENT RETRY: [{"id": "5e57f12d-f6c2-4cac-989d-d0b87cd15b69", "state": 2, "run_attempt_count": 1, "backoff_policy": 0, "backoff_delay_duration": 30000}, {"id": "b3dce6aa-2299-42c9-a699-4a4db62ea034", "state": 2, "run_attempt_count": 1, "backoff_policy": 0, "backoff_delay_duration": 30000}, {"id": "35dba08c-9f99-4879-99a7-bbd3f5f5f020", "state": 0, "run_attempt_count": 1, "backoff_policy": 0, "backoff_delay_duration": 30000}]
+PASS: offline share/restart, network constraint recovery, OG metadata/image, offline cache, blocked fallback, persistent exponential retry
++ adb -s emulator-5592 shell 'cmd connectivity airplane-mode disable'
++ adb -s emulator-5592 shell 'svc wifi enable'
++ adb -s emulator-5592 shell 'svc data enable'
