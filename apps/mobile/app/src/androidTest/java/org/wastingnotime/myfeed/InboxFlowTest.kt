@@ -190,15 +190,20 @@ class InboxFlowTest {
 
     @Test fun emptyViewsAndBackDismissDialogThenSearchThenReturnToMain() {
         val empty = "A quiet inbox. Share a link to my-feed from another app, or paste one here."
-        compose.onNodeWithText(empty).assertIsDisplayed()
+        fun awaitText(text: String) {
+            // Room/Dispatchers.Default projection can finish after Compose becomes idle.
+            compose.waitUntil(10_000) { compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithText(text).assertIsDisplayed()
+        }
+        awaitText(empty)
         compose.onNodeWithText("Grouped").performClick()
-        compose.onNodeWithText(empty).assertIsDisplayed()
+        awaitText(empty)
         Espresso.pressBack()
         compose.onNodeWithText("Main").assertIsSelected()
         compose.onNodeWithText("Archived").performClick()
-        compose.onNodeWithText("No archived links yet.").assertIsDisplayed()
+        awaitText("No archived links yet.")
         compose.onNodeWithText("Search").performClick()
-        compose.onNodeWithText("No matching links in Archived.").assertIsDisplayed()
+        awaitText("No matching links in Archived.")
         compose.onNodeWithText("Paste link").performClick()
         compose.onNodeWithText("URL or shared text").performTextInput("https://example.com/not-saved")
         Espresso.closeSoftKeyboard()
@@ -207,11 +212,11 @@ class InboxFlowTest {
         compose.onNodeWithText("Close search").assertIsDisplayed()
         assertTrue(rows().isEmpty())
         Espresso.pressBack()
-        compose.onNodeWithText("No archived links yet.").assertIsDisplayed()
+        awaitText("No archived links yet.")
         compose.onNodeWithText("Archived").assertIsSelected()
         Espresso.pressBack()
         compose.onNodeWithText("Main").assertIsSelected()
-        compose.onNodeWithText(empty).assertIsDisplayed()
+        awaitText(empty)
     }
 
     @Test fun partialSwipesShowActionAndCancelWithoutChangingRow() {
