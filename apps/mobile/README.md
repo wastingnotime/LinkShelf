@@ -59,9 +59,21 @@ debug signing key; release signing/distribution is not part of this milestone.
   archive/delete, preserves stable ID, the **first original URL**, and opening
   history. Lifecycle operations use the current database row, not a stale card.
 - Main: `archivedAt == null && deletedAt == null`, newest capture first, descending
-  ID on timestamp ties. Grouped is the same ordered inbox with an explicit
-  fallback notice; similarity is milestone 3. Archived shows archived/non-deleted
-  links in capture order; similarity/date sections also follow in milestone 3.
+  ID on timestamp ties. Grouped contains those same items exactly once, grouped
+  by exact host and normalized title-keyword Jaccard similarity (at least 0.5)
+  against fixed newest-item representatives. Missing titles have a separate host
+  fallback group. Groups and members sort by capture/ID recency. Archived shows
+  archived/non-deleted links in capture-date sections, then similarity groups.
+  Precise normalization, tie rules and limitations are in
+  [search-and-grouping.md](../../docs/search-and-grouping.md).
+- Search matches literal normalized substrings in title, description, original
+  or canonical URL, with explicit Inbox / Archived / All chips. Soft-deleted rows
+  never appear. Blank query lists the selected scope; pending/failed previews
+  remain searchable by URL. Search defaults to the current feed's scope and
+  shows chronological results labeled Inbox/Archived. Close search or Back
+  returns to the selected feed. Controls survive activity recreation; process
+  restoration of search controls is not promised. Projection runs locally off
+  the UI thread; no schema/index migration or network request is required.
 - Swipe right archives; swipe left soft-deletes. Buttons provide accessible
   alternatives; Archived also has Restore. A snackbar Undo restores only the
   previous archive/delete state. It preserves later opening history and refuses
@@ -74,7 +86,7 @@ debug signing key; release signing/distribution is not part of this milestone.
   Only a successful dispatch updates `lastOpenedAt`; it never changes capture,
   archive, or delete state. Handler errors show a message and leave the row alone.
 - URL/host/date cards always work offline. Enriched text and cached thumbnails
-  also remain available offline. Search, similarity, dark theme, and localization
+  also remain available offline. Dark theme and localization
   remain future work.
 
 SQLite data persists across process restart/reboot; uninstall/clear-data removes

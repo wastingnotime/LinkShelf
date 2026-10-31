@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.wastingnotime.myfeed.FeedProjectionTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-31T18:54:02.477Z" hostname="chaos" time="0.162">
+  <properties/>
+  <testcase name="normalizationHandlesMultilingualCompatibilityAccentsRepetitionAndEmptyTitles" classname="org.wastingnotime.myfeed.FeedProjectionTest" time="0.049"/>
+  <testcase name="metadataFreeFallbackIsSeparatePerHostAndDoesNotSwallowTitledGroups" classname="org.wastingnotime.myfeed.FeedProjectionTest" time="0.015"/>
+  <testcase name="highestScoreWinsThenRepresentativeCaptureAndIdBreakTies" classname="org.wastingnotime.myfeed.FeedProjectionTest" time="0.002"/>
+  <testcase name="metadataArrivalRegroupsWithoutLosingItemsOrChangingCaptureOrder" classname="org.wastingnotime.myfeed.FeedProjectionTest" time="0.002"/>
+  <testcase name="exactThresholdHostAndFixedRepresentativePreventChaining" classname="org.wastingnotime.myfeed.FeedProjectionTest" time="0.002"/>
+  <testcase name="multilingualTitlesActuallyGroupWithoutDiscardingNonLatinScripts" classname="org.wastingnotime.myfeed.FeedProjectionTest" time="0.002"/>
+  <testcase name="projectionUsesTheSameMembershipAndMakesScopedSearchFlatEvenFromArchive" classname="org.wastingnotime.myfeed.FeedProjectionTest" time="0.016"/>
+  <testcase name="archivedPartitionsByLocalCaptureDayThenSimilarityAndNotArchiveTime" classname="org.wastingnotime.myfeed.FeedProjectionTest" time="0.002"/>
+  <testcase name="mainAndGroupedCoverSameActiveIdsOnceWithStableOrderAcrossInputPermutations" classname="org.wastingnotime.myfeed.FeedProjectionTest" time="0.062"/>
+  <testcase name="literalSearchIncludesEveryFieldUnicodeScopesAndBlankButNeverDeleted" classname="org.wastingnotime.myfeed.FeedProjectionTest" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

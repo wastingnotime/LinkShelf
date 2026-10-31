@@ -1,0 +1,209 @@
++ adb -s emulator-5594 emu avd name
++ adb -s emulator-5594 shell 'getprop ro.build.fingerprint'
+google/sdk_gphone64_x86_64/emu64xa:15/AE3A.240806.043/12960925:userdebug/dev-keys
+
++ adb -s emulator-5594 install -r /home/henrique/.wnt/worktrees/wastingnotime/my-feed/WNT-221-e368f1b5/apps/mobile/app/build/outputs/apk/debug/app-debug.apk
+Performing Streamed Install
+Success
+
++ adb -s emulator-5594 shell 'pm clear org.wastingnotime.myfeed'
+Success
+
++ adb -s emulator-5594 shell 'settings get global airplane_mode_on'
++ adb -s emulator-5594 shell 'settings get global wifi_on'
++ adb -s emulator-5594 shell 'settings get global mobile_data'
++ adb -s emulator-5594 shell 'cmd connectivity airplane-mode enable'
++ adb -s emulator-5594 shell 'svc wifi disable'
++ adb -s emulator-5594 shell 'svc data disable'
++ adb -s emulator-5594 shell 'settings get global airplane_mode_on'
++ adb -s emulator-5594 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT '"'"'Offline link https://example.com/needle-a'"'"' org.wastingnotime.myfeed/.ShareActivity'
++ adb -s emulator-5594 shell 'dumpsys activity activities'
++ adb -s emulator-5594 shell 'dumpsys activity activities'
++ adb -s emulator-5594 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT '"'"'Offline link https://example.com/needle-b'"'"' org.wastingnotime.myfeed/.ShareActivity'
++ adb -s emulator-5594 shell 'dumpsys activity activities'
++ adb -s emulator-5594 shell 'dumpsys activity activities'
++ adb -s emulator-5594 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT '"'"'Offline link https://example.com/needle-c'"'"' org.wastingnotime.myfeed/.ShareActivity'
++ adb -s emulator-5594 shell 'dumpsys activity activities'
++ adb -s emulator-5594 shell 'dumpsys activity activities'
++ adb -s emulator-5594 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5594 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db
++ adb -s emulator-5594 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db-wal
++ adb -s emulator-5594 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db-shm
+[
+  {
+    "id": 3,
+    "originalUrl": "https://example.com/needle-c",
+    "canonicalUrl": "https://example.com/needle-c",
+    "host": "example.com",
+    "capturedAt": 1793472903837,
+    "archivedAt": null,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "pending",
+    "imagePath": null,
+    "revision": 0
+  },
+  {
+    "id": 2,
+    "originalUrl": "https://example.com/needle-b",
+    "canonicalUrl": "https://example.com/needle-b",
+    "host": "example.com",
+    "capturedAt": 1793472903460,
+    "archivedAt": null,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "pending",
+    "imagePath": null,
+    "revision": 0
+  },
+  {
+    "id": 1,
+    "originalUrl": "https://example.com/needle-a",
+    "canonicalUrl": "https://example.com/needle-a",
+    "host": "example.com",
+    "capturedAt": 1793472902993,
+    "archivedAt": null,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "pending",
+    "imagePath": null,
+    "revision": 0
+  }
+]
++ adb -s emulator-5594 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'input tap 539 1794'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'input tap 173 1794'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'input tap 733 767'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'input tap 911 767'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'input tap 539 1794'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 exec-out screencap -p
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'input tap 907 1794'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 exec-out screencap -p
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'input tap 754 147'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'input tap 540 341'
++ adb -s emulator-5594 shell 'input text needle'
++ adb -s emulator-5594 shell 'input keyevent KEYCODE_BACK'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'input tap 129 515'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'input tap 551 515'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 exec-out screencap -p
++ adb -s emulator-5594 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5594 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db
++ adb -s emulator-5594 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db-wal
++ adb -s emulator-5594 exec-out run-as org.wastingnotime.myfeed cat databases/my-feed.db-shm
+[
+  {
+    "id": 3,
+    "originalUrl": "https://example.com/needle-c",
+    "canonicalUrl": "https://example.com/needle-c",
+    "host": "example.com",
+    "capturedAt": 1793472903837,
+    "archivedAt": 1793472913852,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "pending",
+    "imagePath": null,
+    "revision": 1
+  },
+  {
+    "id": 2,
+    "originalUrl": "https://example.com/needle-b",
+    "canonicalUrl": "https://example.com/needle-b",
+    "host": "example.com",
+    "capturedAt": 1793472903460,
+    "archivedAt": null,
+    "deletedAt": 1793472917793,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "pending",
+    "imagePath": null,
+    "revision": 1
+  },
+  {
+    "id": 1,
+    "originalUrl": "https://example.com/needle-a",
+    "canonicalUrl": "https://example.com/needle-a",
+    "host": "example.com",
+    "capturedAt": 1793472902993,
+    "archivedAt": null,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "pending",
+    "imagePath": null,
+    "revision": 0
+  }
+]
++ adb -s emulator-5594 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
++ adb -s emulator-5594 shell 'input tap 539 1794'
++ adb -s emulator-5594 shell 'uiautomator dump /sdcard/my-feed-wnt-221.xml'
++ adb -s emulator-5594 exec-out cat /sdcard/my-feed-wnt-221.xml
+PASS: offline shares/restart, Main-to-Grouped coverage, archived date/group, explicit Inbox/Archived/All search, deleted exclusion and durable lifecycle
++ adb -s emulator-5594 shell 'cmd connectivity airplane-mode disable'
++ adb -s emulator-5594 shell 'svc wifi enable'
++ adb -s emulator-5594 shell 'svc data enable'

@@ -35,7 +35,12 @@ extraction. Main, Grouped, and Archived query the same collection.
   URL/host cards; milestone 2 adds the enrichment policy documented in
   apps/mobile/README.md.
 - Search offers explicit Inbox / Archived / All scopes and excludes deleted
-  rows. Index title, description, and URL locally; evaluate Room FTS when adding it.
+  rows. Match title, description, and URL locally; evaluate Room FTS when adding it.
+
+Milestone 3's precise normalization, Jaccard threshold, representative/tie rules,
+metadata-free fallback, archived capture-day sections and literal scoped search
+are specified in [search-and-grouping.md](search-and-grouping.md). Establish these
+rules and their tests before implementing the derived views.
 
 ## Milestones and verification
 
