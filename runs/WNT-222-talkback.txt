@@ -1,0 +1,172 @@
++ adb -s emulator-5596 shell 'settings get secure enabled_accessibility_services'
+INITIAL SERVICES: null
+
++ adb -s emulator-5596 shell 'settings get secure accessibility_enabled'
+INITIAL ENABLED: 0
+
++ adb -s emulator-5596 shell 'settings put secure enabled_accessibility_services com.google.android.marvin.talkback/com.google.android.marvin.talkback.TalkBackService'
++ adb -s emulator-5596 shell 'settings put secure accessibility_enabled 1'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Allow Android Accessibility Suite to send you notifications?', '', '[133,765][947,898]'), ('Allow', '', '[133,966][947,1113]'), ('Don’t allow', '', '[133,1123][947,1270]')]
++ adb -s emulator-5596 shell 'dumpsys accessibility'
+ACCESSIBILITY MANAGER (dumpsys accessibility)
+
+currentUserId=0
+hasMagnificationConnection=true
+Magnifier on display#0
+    MagnificationConfig[mode: 1, activated: false, scale: 1.0, centerX: 540.0, centerY: 960.0] 
+    Magnification region=SkRegion((0,0,1080,1920))
+    IdOfLastServiceToMagnify=-1
+    SupportWindowMagnification=true
+    WindowMagnificationConnectionState=CONNECTED
+User state[
+     attributes:{id=0, touchExplorationEnabled=true, serviceHandlesDoubleTap=true, requestMultiFingerGestures=true, requestTwoFingerPassthrough=true, sendMotionEventsEnabledfalse, displayMagnificationEnabled=false, autoclickEnabled=false, nonInteractiveUiTimeout=0, interactiveUiTimeout=10000, installedServiceCount=3, magnificationModes={0=1}, magnificationCapabilities=3, audioDescriptionByDefaultEnabled=false, magnificationFollowTypingEnabled=true, alwaysOnMagnificationEnabled=true}
+     shortcut key:{}
+     button:{}
+     button target:{null}
+     qs shortcut targets:{}
+     a11y tiles in QS panel:{}
+     Bound services:{Service[label=TalkBack, feedbackType[FEEDBACK_SPOKEN, FEEDBACK_HAPTIC, FEEDBACK_AUDIBLE], capabilities=251, eventTypes=TYPES_ALL_MASK, notificationTimeout=0, requestA11yBtn=false]}
+     Enabled services:{{com.google.android.marvin.talkback/com.google.android.marvin.talkback.TalkBackService}}
+     Binding services:{}
+     Crashed services:{}
+     Client list info:{
+          Client list callbacks: 12
+          Client list killed: false
+          Client list broadcasts count: -1
+          Registered clients:{
+[com.google.android.apps.messaging][com.google.android.inputmethod.latin][com.google.android.youtube][com.google.android.apps.nexuslauncher][com.google.android.tts][com.google.android.googlequicksearchbox][com.google.android.as][com.android.chrome][com.google.android.googlequicksearchbox][com.google.android.apps.wellbeing][com.google.android.marvin.talkback][org.wastingnotime.myfeed]}]
+Global Info [ Top focused display Id = 0
+     Active Window Id = 1078
+     Top Focused Window Id = 1078
+     Accessibility Focused Window Id = 1078 ]
+
+Display[0] : 
+A11yWindow[AccessibilityWindowInfo[title=null, displayId=0, id=1069, taskId=-1, type=TYPE_SYSTEM, layer=1, region=SkRegion((0,0,1080,63)), bounds=Rect(0, 0 - 1080, 63), focused=false, active=false, pictureInPicture=false, transitionTime=533216, hasParent=false, isAnchored=false, hasChildren=false]]
+WindowInfo[WindowInfo[title=null, displayId=0, taskId=-1, type=2000, layer=0, token=android.os.BinderProxy@7900882, region=SkRegion((0,0,1080,63)), bounds=Rect(0, 0 - 1080, 63), parent=null, focused=false, children=null, accessibility anchor=9223372034707292159, pictureInPicture=false, watchOutsideTouch=false, mTransformMatrix=Matrix{[1.0, 0.0, 0.0][0.0, 1.0, 0.0][0.0, 0.0, 1.0]}, mMagnificationSpec=<scale:1.0,offsetX:0.0,offsetY:0.0>, locales=[en_US]]]
+,
+A11yWindow[AccessibilityWindowInfo[title=Allow Android Accessibility Suite to send you notifications?, displayId=0, id=1078, taskId=112, type=TYPE_APPLICATION, layer=0, region=SkRegion((28,544,1052,1375)), bounds=Rect(28, 544 - 1052, 1375), focused=true, active=true, pictureInPicture=false, transitionTime=533534, hasParent=false, isAnchored=false, hasChildren=false]]
+WindowInfo[WindowInfo[title=Allow Android Accessibility Suite to send you notifications?, displayId=0, taskId=112, type=1, layer=1, token=android.os.BinderProxy@aba342e, region=SkRegion((28,544,1052,1375)), bounds=Rect(28, 544 - 1052, 1375), parent=null, focused=true, children=null, accessibility anchor=9223372034707292159, pictureInPicture=false, watchOutsideTouch=false, mTransformMatrix=Matrix{[1.0, 0.0, 28.0][0.0, 1.0, 544.0][0.0, 0.0, 1.0]}, mMagnificationSpec=<scale:1.0,offsetX:0.0,offsetY:0.0>, locales=[en_US]]]
+
+
+Window attributes:[{1058=AccessibilityWindowAttributes{mAccessibilityWindowTitle=YouTubemLocales=[en_US]}, 1059=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}, 1060=AccessibilityWindowAttributes{mAccessibilityWindowTitle=my-feedmLocales=[en_US]}, 1061=AccessibilityWindowAttributes{mAccessibilityWindowTitle=HomemLocales=[en_US]}, 1062=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}, 1063=AccessibilityWindowAttributes{mAccessibilityWindowTitle=ChromemLocales=[en_US]}, 1064=AccessibilityWindowAttributes{mAccessibilityWindowTitle=Navigation bar Edge PanelmLocales=[en_US]}, 1065=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}, 1066=AccessibilityWindowAttributes{mAccessibilityWindowTitle=Navigation barmLocales=[en_US]}, 1067=AccessibilityWindowAttributes{mAccessibilityWindowTitle=English (US) (QWERTY)mLocales=[en_US]}, 1068=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}, 1069=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}, 1070=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}, 1071=AccessibilityWindowAttributes{mAccessibilityWindowTitle=Android Accessibility SuitemLocales=[en_US]}, 1076=AccessibilityWindowAttributes{mAccessibilityWindowTitle=Allow Android Accessibility Suite to send you notifications?mLocales=[en_US]}, 1077=AccessibilityWindowAttributes{mAccessibilityWindowTitle=Android Accessibility SuitemLocales=[en_US]}, 1078=AccessibilityWindowAttributes{mAccessibilityWindowTitle=Allow Android Accessibility Suite to send you notifications?mLocales=[en_US]}}]
+A11yInputFilter Info : 
+Enabled features of Display [0] = [KeyboardInterceptor,MotionEventInjector,MagnificationGesture,TouchExplorer]
+Global client list info:{
+    Client list callbacks: 8
+    Client list killed: false
+    Client list broadcasts count: -1
+    Registered clients:{
+[com.google.android.documentsui][com.android.intentresolver][com.google.android.googlesdksetup][com.android.systemui][com.google.android.gms, com.google.android.gsf][android, com.android.keychain, com.android.emulator.multidisplay, com.android.location.fused, com.android.DeviceAsWebcam, com.android.server.telecom, com.android.inputdevices, com.android.dynsystem, com.android.localtransport, com.android.providers.settings, com.android.settings][android, com.android.keychain, com.android.emulator.multidisplay, com.android.location.fused, com.android.DeviceAsWebcam, com.android.server.telecom, com.android.inputdevices, com.android.dynsystem, com.android.localtransport, com.android.providers.settings, com.android.settings][com.google.android.permissioncontroller]
+
+Proxy manager state:
+    Number of proxy connections: 0
+    Registered proxy connections:
+Accessibility Display Listener:
+    SystemUI uid: 10181
+    1 valid display: 0
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input tap 540 1196'
++ adb -s emulator-5596 shell 'input tap 540 1196'
++ adb -s emulator-5596 shell 'input tap 540 1196'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Allow Android Accessibility Suite to send you notifications?', '', '[133,765][947,898]'), ('Allow', '', '[133,966][947,1113]'), ('Don’t allow', '', '[133,1123][947,1270]')]
++ adb -s emulator-5596 shell 'input keyevent KEYCODE_BACK'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Allow Android Accessibility Suite to send you notifications?', '', '[133,765][947,898]'), ('Allow', '', '[133,966][947,1113]'), ('Don’t allow', '', '[133,1123][947,1270]')]
+Dismiss initial screen-reader setup permission on this disposable AVD.
++ adb -s emulator-5596 shell 'pm grant com.google.android.marvin.talkback android.permission.POST_NOTIFICATIONS'
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+Status: ok
+LaunchState: UNKNOWN (0)
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 0
+WaitTime: 2
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Your inbox · newest first', '', '[42,252][437,305]'), ('example.com', '', '[84,410][348,473]'), ('Example Domain', '', '[84,494][419,557]'), ('https://example.com/?wnt222=chrome', '', '[84,578][656,620]'), ('Saved Oct 31, 2026 5:04 PM', '', '[84,641][513,683]'), ('Preview saved · available offline', '', '[84,704][559,746]'), ('Archive', '', '[671,804][795,857]'), ('Delete', '', '[859,804][964,857]'), ('127.0.0.1', '', '[84,1009][270,1072]'), ('http://127.0.0.1/private', '', '[84,1093][551,1156]'), ('Saved Oct 31, 2026 5:02 PM', '', '[84,1177][513,1219]'), ('Preview unavailable · link saved', '', '[84,1240][552,1282]'), ('Retry preview', '', '[116,1340][339,1393]'), ('Archive', '', '[671,1487][795,1540]'), ('Delete', '', '[859,1487][964,1540]'), ('my-feed', '', '[43,110][248,184]'), ('Search', '', '[697,121][811,174]'), ('Paste link', '', '[875,121][1037,174]'), ('Main', '', '[136,1773][210,1815]'), ('Grouped', '', '[476,1773][603,1815]'), ('Archived', '', '[841,1773][973,1815]')]
++ adb -s emulator-5596 shell 'input tap 750 150'
++ adb -s emulator-5596 exec-out screencap -p
++ adb -s emulator-5596 shell 'input tap 750 150'
++ adb -s emulator-5596 shell 'input tap 750 150'
++ adb -s emulator-5596 exec-out screencap -p
++ adb -s emulator-5596 shell 'dumpsys accessibility'
+ACCESSIBILITY MANAGER (dumpsys accessibility)
+
+currentUserId=0
+hasMagnificationConnection=true
+Magnifier on display#0
+    MagnificationConfig[mode: 1, activated: false, scale: 1.0, centerX: 540.0, centerY: 960.0] 
+    Magnification region=SkRegion((0,0,1080,1920))
+    IdOfLastServiceToMagnify=-1
+    SupportWindowMagnification=true
+    WindowMagnificationConnectionState=CONNECTED
+User state[
+     attributes:{id=0, touchExplorationEnabled=true, serviceHandlesDoubleTap=true, requestMultiFingerGestures=true, requestTwoFingerPassthrough=true, sendMotionEventsEnabledfalse, displayMagnificationEnabled=false, autoclickEnabled=false, nonInteractiveUiTimeout=0, interactiveUiTimeout=10000, installedServiceCount=3, magnificationModes={0=1}, magnificationCapabilities=3, audioDescriptionByDefaultEnabled=false, magnificationFollowTypingEnabled=true, alwaysOnMagnificationEnabled=true}
+     shortcut key:{}
+     button:{}
+     button target:{null}
+     qs shortcut targets:{}
+     a11y tiles in QS panel:{}
+     Bound services:{Service[label=TalkBack, feedbackType[FEEDBACK_SPOKEN, FEEDBACK_HAPTIC, FEEDBACK_AUDIBLE], capabilities=251, eventTypes=TYPES_ALL_MASK, notificationTimeout=0, requestA11yBtn=false]}
+     Enabled services:{{com.google.android.marvin.talkback/com.google.android.marvin.talkback.TalkBackService}}
+     Binding services:{}
+     Crashed services:{}
+     Client list info:{
+          Client list callbacks: 12
+          Client list killed: false
+          Client list broadcasts count: -1
+          Registered clients:{
+[com.google.android.apps.messaging][com.google.android.inputmethod.latin][com.google.android.youtube][com.google.android.apps.nexuslauncher][com.google.android.tts][com.google.android.googlequicksearchbox][com.google.android.as][com.android.chrome][com.google.android.googlequicksearchbox][com.google.android.apps.wellbeing][com.google.android.marvin.talkback][org.wastingnotime.myfeed]}]
+Global Info [ Top focused display Id = 0
+     Active Window Id = 1060
+     Top Focused Window Id = 1060
+     Accessibility Focused Window Id = 1060 ]
+
+Display[0] : 
+A11yWindow[AccessibilityWindowInfo[title=null, displayId=0, id=1069, taskId=-1, type=TYPE_SYSTEM, layer=1, region=SkRegion((0,0,1080,63)), bounds=Rect(0, 0 - 1080, 63), focused=false, active=false, pictureInPicture=false, transitionTime=566126, hasParent=false, isAnchored=false, hasChildren=false]]
+WindowInfo[WindowInfo[title=null, displayId=0, taskId=-1, type=2000, layer=0, token=android.os.BinderProxy@7900882, region=SkRegion((0,0,1080,63)), bounds=Rect(0, 0 - 1080, 63), parent=null, focused=false, children=null, accessibility anchor=9223372034707292159, pictureInPicture=false, watchOutsideTouch=false, mTransformMatrix=Matrix{[1.0, 0.0, 0.0][0.0, 1.0, 0.0][0.0, 0.0, 1.0]}, mMagnificationSpec=<scale:1.0,offsetX:0.0,offsetY:0.0>, locales=[en_US]]]
+,
+A11yWindow[AccessibilityWindowInfo[title=my-feed, displayId=0, id=1060, taskId=110, type=TYPE_APPLICATION, layer=0, region=SkRegion((0,0,1080,1920)), bounds=Rect(0, 0 - 1080, 1920), focused=true, active=true, pictureInPicture=false, transitionTime=566126, hasParent=false, isAnchored=false, hasChildren=false]]
+WindowInfo[WindowInfo[title=my-feed, displayId=0, taskId=110, type=1, layer=1, token=android.os.BinderProxy@d9fb8eb, region=SkRegion((0,0,1080,1920)), bounds=Rect(0, 0 - 1080, 1920), parent=null, focused=true, children=null, accessibility anchor=9223372034707292159, pictureInPicture=false, watchOutsideTouch=false, mTransformMatrix=Matrix{[1.0, 0.0, 0.0][0.0, 1.0, 0.0][0.0, 0.0, 1.0]}, mMagnificationSpec=<scale:1.0,offsetX:0.0,offsetY:0.0>, locales=[en_US]]]
+
+
+Window attributes:[{1058=AccessibilityWindowAttributes{mAccessibilityWindowTitle=YouTubemLocales=[en_US]}, 1059=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}, 1060=AccessibilityWindowAttributes{mAccessibilityWindowTitle=my-feedmLocales=[en_US]}, 1061=AccessibilityWindowAttributes{mAccessibilityWindowTitle=HomemLocales=[en_US]}, 1062=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}, 1063=AccessibilityWindowAttributes{mAccessibilityWindowTitle=ChromemLocales=[en_US]}, 1064=AccessibilityWindowAttributes{mAccessibilityWindowTitle=Navigation bar Edge PanelmLocales=[en_US]}, 1065=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}, 1066=AccessibilityWindowAttributes{mAccessibilityWindowTitle=Navigation barmLocales=[en_US]}, 1067=AccessibilityWindowAttributes{mAccessibilityWindowTitle=English (US) (QWERTY)mLocales=[en_US]}, 1068=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}, 1069=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}, 1070=AccessibilityWindowAttributes{mAccessibilityWindowTitle=nullmLocales=[en_US]}}]
+A11yInputFilter Info : 
+Enabled features of Display [0] = [KeyboardInterceptor,MotionEventInjector,MagnificationGesture,TouchExplorer]
+Global client list info:{
+    Client list callbacks: 8
+    Client list killed: false
+    Client list broadcasts count: -1
+    Registered clients:{
+[com.google.android.documentsui][com.android.intentresolver][com.google.android.googlesdksetup][com.android.systemui][com.google.android.gms, com.google.android.gsf][android, com.android.keychain, com.android.emulator.multidisplay, com.android.location.fused, com.android.DeviceAsWebcam, com.android.server.telecom, com.android.inputdevices, com.android.dynsystem, com.android.localtransport, com.android.providers.settings, com.android.settings][android, com.android.keychain, com.android.emulator.multidisplay, com.android.location.fused, com.android.DeviceAsWebcam, com.android.server.telecom, com.android.inputdevices, com.android.dynsystem, com.android.localtransport, com.android.providers.settings, com.android.settings][com.google.android.permissioncontroller]
+
+Proxy manager state:
+    Number of proxy connections: 0
+    Registered proxy connections:
+Accessibility Display Listener:
+    SystemUI uid: 10181
+    1 valid display: 0
+
++ adb -s emulator-5596 shell 'input swipe 300 1000 750 1000 120'
++ adb -s emulator-5596 exec-out screencap -p
++ adb -s emulator-5596 shell 'input keyevent KEYCODE_BACK'
++ adb -s emulator-5596 exec-out screencap -p
+Limited screen-reader visual focus/Back check; audio output is not evaluated.
++ adb -s emulator-5596 shell 'settings delete secure enabled_accessibility_services'
++ adb -s emulator-5596 shell 'settings put secure accessibility_enabled 0'
++ adb -s emulator-5596 shell 'pm revoke com.google.android.marvin.talkback android.permission.POST_NOTIFICATIONS'
+Restored initial accessibility settings and revoked temporary setup notification permission.

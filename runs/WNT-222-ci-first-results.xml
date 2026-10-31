@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="org.wastingnotime.myfeed.InboxFlowTest" tests="11" failures="1" errors="0" skipped="0" time="67.719" timestamp="2026-10-31T20:07:43" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 15" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="failedPreviewKeepsUrlAndRetryReturnsToPending" classname="org.wastingnotime.myfeed.InboxFlowTest" time="5.717" />
+  <testcase name="labeledTouchControlsAndFailedCardWorkWithoutSwiping" classname="org.wastingnotime.myfeed.InboxFlowTest" time="4.809" />
+  <testcase name="swipeRightArchivesAndSwipeLeftDeletesWithUndo" classname="org.wastingnotime.myfeed.InboxFlowTest" time="5.761" />
+  <testcase name="groupedAndArchivedRenderSimilarityFallbackAndCaptureDateSections" classname="org.wastingnotime.myfeed.InboxFlowTest" time="4.099" />
+  <testcase name="repeatedSharesRestoreInboxPreserveOriginalAndReturnWithoutConfirmation" classname="org.wastingnotime.myfeed.InboxFlowTest" time="4.536" />
+  <testcase name="invalidSharedTextReturnsWithoutWriting" classname="org.wastingnotime.myfeed.InboxFlowTest" time="8.819" />
+  <testcase name="pasteRecreateOpenArchiveDeleteUndoAndRestore" classname="org.wastingnotime.myfeed.InboxFlowTest" time="10.031" />
+  <testcase name="receiverRecreationDuringCommitDoesNotCaptureTwice" classname="org.wastingnotime.myfeed.InboxFlowTest" time="4.44" />
+  <testcase name="emptyViewsAndBackDismissDialogThenSearchThenReturnToMain" classname="org.wastingnotime.myfeed.InboxFlowTest" time="2.742">
+    <failure>java.lang.AssertionError: Assert failed: The component with Text + InputText + EditableText contains 'A quiet inbox. Share a link to my-feed from another app, or paste one here.' (ignoreCase: false) is not displayed!
+at androidx.compose.ui.test.AssertionsKt.assertIsDisplayed(Assertions.kt:34)
+at org.wastingnotime.myfeed.InboxFlowTest.emptyViewsAndBackDismissDialogThenSearchThenReturnToMain(InboxFlowTest.kt:193)
+</failure>
+  </testcase>
+  <testcase name="partialSwipesShowActionAndCancelWithoutChangingRow" classname="org.wastingnotime.myfeed.InboxFlowTest" time="3.325" />
+  <testcase name="scopedSearchReactsToLifecycleMetadataAndRecreationAndBackReturnsToFeed" classname="org.wastingnotime.myfeed.InboxFlowTest" time="10.885" />
+</testsuite>

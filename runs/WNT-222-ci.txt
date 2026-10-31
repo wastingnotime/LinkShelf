@@ -1,0 +1,22 @@
+Run https://github.com/wastingnotime/my-feed/actions/runs/41237631887
+Focused log excerpts; full logs remain on the canonical run.
+2026-10-31T20:10:24.3043334Z HEAD is now at c527c52 Merge 6fd1bf2a50f815a91d216f611ac83a141788220d into 7b04a7f56189cbd0d0bb69838bec9abaf8889fb3
+2026-10-31T20:10:24.6467084Z   Version: 17.0.21+9
+2026-10-31T20:12:19.8547621Z BUILD SUCCESSFUL in 1m 26s
+2026-10-31T20:13:20.3512622Z BUILD SUCCESSFUL in 1m
+2026-10-31T20:13:57.3837507Z INFO         | Android emulator version 37.2.13.0 (build_id 16740729) (CL:N/A)
+2026-10-31T20:16:13.8305253Z emulator-5554 - 15 Tests 1/11 completed. (0 skipped) (0 failed)
+2026-10-31T20:16:23.8293740Z emulator-5554 - 15 Tests 3/11 completed. (0 skipped) (0 failed)
+2026-10-31T20:16:34.0454986Z emulator-5554 - 15 Tests 5/11 completed. (0 skipped) (0 failed)
+2026-10-31T20:16:43.8269613Z emulator-5554 - 15 Tests 6/11 completed. (0 skipped) (0 failed)
+2026-10-31T20:16:53.8258450Z emulator-5554 - 15 Tests 8/11 completed. (0 skipped) (0 failed)
+2026-10-31T20:17:03.8267689Z emulator-5554 - 15 Tests 10/11 completed. (0 skipped) (0 failed)
+2026-10-31T20:17:13.2249831Z Finished 11 tests on emulator-5554 - 15
+2026-10-31T20:17:15.3259972Z BUILD SUCCESSFUL in 2m 13s
+2026-10-31T20:17:20.7992727Z BUILD SUCCESSFUL in 3s
+2026-10-31T20:17:22.3899342Z SHA256 digest of uploaded artifact zip is 31b298984cc3c2e7ddbd9323db8919df0a10e0b22ee0446e64fa8d6f42bd21c2
+2026-10-31T20:17:22.8266752Z Artifact my-feed-debug-c527c527e00f58c9f584bde28e1e19a70b518884.zip successfully finalized. Artifact ID 13056174223
+2026-10-31T20:17:22.8269241Z Artifact my-feed-debug-c527c527e00f58c9f584bde28e1e19a70b518884 has been successfully uploaded! Final size is 11352555 bytes. Artifact ID is 13056174223
+2026-10-31T20:17:22.8278077Z Artifact download URL: https://github.com/wastingnotime/my-feed/actions/runs/41237631887/artifacts/13056174223
+2026-10-31T20:17:23.5847510Z SHA256 digest of uploaded artifact zip is d1e7fe0311e02fbc0556d8995b01077545931a145f713d0a8ca42ee8e7538efd
+2026-10-31T20:17:24.0571671Z Artifact download URL: https://github.com/wastingnotime/my-feed/actions/runs/41237631887/artifacts/13056388364

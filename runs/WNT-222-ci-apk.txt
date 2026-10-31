@@ -1,0 +1,44 @@
++ adb -s emulator-5596 emu avd name
+DOWNLOADED CI APK: app-debug.apk BYTES: 11817084 SHA256: 4424275351451910cfb2304da7a2b62aac149d0736e785925616d1a66dc67031
++ adb -s emulator-5596 shell 'settings get global airplane_mode_on'
++ adb -s emulator-5596 shell 'settings get global wifi_on'
++ adb -s emulator-5596 shell 'settings get global mobile_data'
++ adb -s emulator-5596 install -r /tmp/wnt222-ci-apk/app-debug.apk
+Performing Streamed Install
+Success
+
++ adb -s emulator-5596 shell 'cmd connectivity airplane-mode enable'
++ adb -s emulator-5596 shell 'svc wifi disable'
++ adb -s emulator-5596 shell 'svc data disable'
++ adb -s emulator-5596 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT '"'"'CI artifact delivery https://example.com/wnt222-ci-delivery'"'"' org.wastingnotime.myfeed/.ShareActivity'
+Starting: Intent { act=android.intent.action.SEND typ=text/plain cmp=org.wastingnotime.myfeed/.ShareActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: org.wastingnotime.myfeed/.ShareActivity
+TotalTime: 402
+WaitTime: 403
+Complete
+
++ adb -s emulator-5596 shell 'dumpsys activity activities'
++ adb -s emulator-5596 shell 'dumpsys activity activities'
++ adb -s emulator-5596 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 797
+WaitTime: 800
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
+CI APK PERSISTED OFFLINE CAPTURE: {"id": 1, "originalUrl": "https://example.com/wnt222-ci-delivery", "canonicalUrl": "https://example.com/wnt222-ci-delivery", "host": "example.com", "capturedAt": 1793477869220, "archivedAt": null, "deletedAt": null, "lastOpenedAt": null, "title": null, "description": null, "imageUrl": null, "siteName": null, "previewStatus": "pending", "imagePath": null, "revision": 0}
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Your inbox · newest first', '', '[42,252][437,305]'), ('example.com', '', '[84,410][348,473]'), ('https://example.com/wnt222-ci-delivery', '', '[84,494][880,557]'), ('Saved Oct 31, 2026 5:17 PM', '', '[84,578][513,620]'), ('Saved offline · preview pending', '', '[84,641][543,683]'), ('Archive', '', '[671,741][795,794]'), ('Delete', '', '[859,741][964,794]'), ('my-feed', '', '[43,110][248,184]'), ('Search', '', '[697,121][811,174]'), ('Paste link', '', '[875,121][1037,174]'), ('Main', '', '[136,1773][210,1815]'), ('Grouped', '', '[476,1773][603,1815]'), ('Archived', '', '[841,1773][973,1815]')]
+PASS: downloaded CI APK installs, captures offline without a form, and survives process restart
++ adb -s emulator-5596 shell 'cmd connectivity airplane-mode disable'
++ adb -s emulator-5596 shell 'svc wifi enable'
++ adb -s emulator-5596 shell 'svc data enable'

@@ -1,0 +1,25 @@
++ adb -s emulator-5596 shell getprop ro.build.fingerprint
+google/sdk_gphone64_x86_64/emu64xa:15/AE3A.240806.043/12960925:userdebug/dev-keys
+
++ adb -s emulator-5596 shell getprop ro.build.version.sdk
+35
+
++ adb -s emulator-5596 shell wm size
+Physical size: 1080x1920
+
++ adb -s emulator-5596 shell wm density
+Physical density: 420
+
++ adb -s emulator-5596 shell dumpsys package com.android.chrome (version fields)
+versionCode=636771938 minSdk=29 targetSdk=34
+versionName=124.0.6367.219
+versionCode=636771938 minSdk=26 targetSdk=34
+versionName=124.0.6367.219
++ adb -s emulator-5596 shell dumpsys package com.google.android.youtube (version fields)
+versionCode=1545868784 minSdk=26 targetSdk=34
+versionName=19.17.42
++ adb -s emulator-5596 shell dumpsys package com.whatsapp (version fields)
+Unable to find package: com.whatsapp
++ adb -s emulator-5596 shell dumpsys package com.google.android.marvin.talkback (version fields)
+versionCode=60138361 minSdk=26 targetSdk=35
+versionName=15.0.0.639625893

@@ -1,0 +1,229 @@
++ adb -s emulator-5596 emu avd name
++ adb -s emulator-5596 shell 'getprop ro.build.fingerprint'
+google/sdk_gphone64_x86_64/emu64xa:15/AE3A.240806.043/12960925:userdebug/dev-keys
+
++ adb -s emulator-5596 install -r /home/henrique/.wnt/worktrees/wastingnotime/my-feed/WNT-222-8f71d6e8/apps/mobile/app/build/outputs/apk/debug/app-debug.apk
+Performing Streamed Install
+Success
+
++ adb -s emulator-5596 shell 'pm clear org.wastingnotime.myfeed'
+Success
+
++ adb -s emulator-5596 shell 'settings get global airplane_mode_on'
++ adb -s emulator-5596 shell 'settings get global wifi_on'
++ adb -s emulator-5596 shell 'settings get global mobile_data'
++ adb -s emulator-5596 shell 'settings get system font_scale'
++ adb -s emulator-5596 shell 'cmd connectivity airplane-mode enable'
++ adb -s emulator-5596 shell 'svc wifi disable'
++ adb -s emulator-5596 shell 'svc data disable'
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 1113
+WaitTime: 1114
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Your inbox · newest first', '', '[42,252][437,305]'), ('A quiet inbox. Share a link to my-feed from another app, or paste one here.', '', '[84,924][996,1050]'), ('my-feed', '', '[43,110][248,184]'), ('Search', '', '[697,121][811,174]'), ('Paste link', '', '[875,121][1037,174]'), ('Main', '', '[136,1773][210,1815]'), ('Grouped', '', '[476,1773][603,1815]'), ('Archived', '', '[841,1773][973,1815]')]
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input tap 907 1794'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input keyevent KEYCODE_BACK'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input keyevent KEYCODE_BACK'
++ adb -s emulator-5596 shell 'dumpsys activity activities'
+AFTER ROOT BACK:     topResumedActivity=ActivityRecord{3c160df u0 com.android.chrome/org.chromium.chrome.browser.ChromeTabbedActivity t104}
+PASS: empty views and root Back exits activity
++ adb -s emulator-5596 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT '"'"'Offline share https://ogp.me/'"'"' org.wastingnotime.myfeed/.ShareActivity'
+Starting: Intent { act=android.intent.action.SEND typ=text/plain cmp=org.wastingnotime.myfeed/.ShareActivity (has extras) }
+Status: ok
+LaunchState: WARM
+Activity: org.wastingnotime.myfeed/.ShareActivity
+TotalTime: 426
+WaitTime: 430
+Complete
+
++ adb -s emulator-5596 shell 'dumpsys activity activities'
++ adb -s emulator-5596 shell 'dumpsys activity activities'
++ adb -s emulator-5596 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 763
+WaitTime: 765
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Your inbox · newest first', '', '[42,252][437,305]'), ('ogp.me', '', '[84,410][232,473]'), ('https://ogp.me/', '', '[84,494][399,557]'), ('Saved Oct 31, 2026 5:08 PM', '', '[84,578][513,620]'), ('Saved offline · preview pending', '', '[84,641][543,683]'), ('Archive', '', '[671,741][795,794]'), ('Delete', '', '[859,741][964,794]'), ('my-feed', '', '[43,110][248,184]'), ('Search', '', '[697,121][811,174]'), ('Paste link', '', '[875,121][1037,174]'), ('Main', '', '[136,1773][210,1815]'), ('Grouped', '', '[476,1773][603,1815]'), ('Archived', '', '[841,1773][973,1815]')]
+OFFLINE: {"id": 1, "originalUrl": "https://ogp.me/", "canonicalUrl": "https://ogp.me/", "host": "ogp.me", "capturedAt": 1793477303255, "archivedAt": null, "deletedAt": null, "lastOpenedAt": null, "title": null, "description": null, "imageUrl": null, "siteName": null, "previewStatus": "pending", "imagePath": null, "revision": 0} WORK: [{"state": 0, "run_attempt_count": 0}]
++ adb -s emulator-5596 shell 'cmd connectivity airplane-mode disable'
++ adb -s emulator-5596 shell 'svc wifi enable'
++ adb -s emulator-5596 shell 'svc data enable'
+ENRICHED: {"id": 1, "originalUrl": "https://ogp.me/", "canonicalUrl": "https://ogp.me/", "host": "ogp.me", "capturedAt": 1793477303255, "archivedAt": null, "deletedAt": null, "lastOpenedAt": null, "title": "Open Graph protocol", "description": "The Open Graph protocol enables any web page to become a rich object in a social graph.", "imageUrl": "https://ogp.me/logo.png", "siteName": null, "previewStatus": "ready", "imagePath": "1.jpg", "revision": 0}
++ adb -s emulator-5596 shell 'cmd connectivity airplane-mode enable'
++ adb -s emulator-5596 shell 'svc wifi disable'
++ adb -s emulator-5596 shell 'svc data disable'
++ adb -s emulator-5596 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 844
+WaitTime: 845
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out run-as org.wastingnotime.myfeed cat files/previews/1.jpg
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Your inbox · newest first', '', '[42,252][437,305]'), ('ogp.me', '', '[84,904][232,967]'), ('Open Graph protocol', '', '[84,988][494,1051]'), ('The Open Graph protocol enables any web page to become a rich object in a social graph.', '', '[84,1072][996,1178]'), ('https://ogp.me/', '', '[84,1199][317,1241]'), ('Saved Oct 31, 2026 5:08 PM', '', '[84,1262][513,1304]'), ('Preview saved · available offline', '', '[84,1325][559,1367]'), ('Archive', '', '[671,1425][795,1478]'), ('Delete', '', '[859,1425][964,1478]'), ('my-feed', '', '[43,110][248,184]'), ('Search', '', '[697,121][811,174]'), ('Paste link', '', '[875,121][1037,174]'), ('Main', '', '[136,1773][210,1815]'), ('Grouped', '', '[476,1773][603,1815]'), ('Archived', '', '[841,1773][973,1815]')]
+PASS: offline capture/restart, automatic production worker recovery, cached image/text offline
++ adb -s emulator-5596 shell 'cmd connectivity airplane-mode disable'
++ adb -s emulator-5596 shell 'svc wifi enable'
++ adb -s emulator-5596 shell 'svc data enable'
++ adb -s emulator-5596 shell 'am start -W -a android.intent.action.SEND -t text/plain --es android.intent.extra.TEXT http://127.0.0.1/private org.wastingnotime.myfeed/.ShareActivity'
+Starting: Intent { act=android.intent.action.SEND typ=text/plain cmp=org.wastingnotime.myfeed/.ShareActivity (has extras) }
+Status: ok
+LaunchState: WARM
+Activity: org.wastingnotime.myfeed/.ShareActivity
+TotalTime: 44
+WaitTime: 50
+Complete
+
++ adb -s emulator-5596 shell 'dumpsys activity activities'
++ adb -s emulator-5596 shell 'dumpsys activity activities'
++ adb -s emulator-5596 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 962
+WaitTime: 963
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Your inbox · newest first', '', '[42,252][437,305]'), ('127.0.0.1', '', '[84,410][270,473]'), ('http://127.0.0.1/private', '', '[84,494][551,557]'), ('Saved Oct 31, 2026 5:08 PM', '', '[84,578][513,620]'), ('Preview unavailable · link saved', '', '[84,641][552,683]'), ('Retry preview', '', '[116,741][339,794]'), ('Archive', '', '[671,888][795,941]'), ('Delete', '', '[859,888][964,941]'), ('ogp.me', '', '[84,1587][232,1647]'), ('my-feed', '', '[43,110][248,184]'), ('Search', '', '[697,121][811,174]'), ('Paste link', '', '[875,121][1037,174]'), ('Main', '', '[136,1773][210,1815]'), ('Grouped', '', '[476,1773][603,1815]'), ('Archived', '', '[841,1773][973,1815]')]
++ adb -s emulator-5596 shell 'cmd connectivity airplane-mode enable'
++ adb -s emulator-5596 shell 'svc wifi disable'
++ adb -s emulator-5596 shell 'svc data disable'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input tap 227 767'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
+PASS: failed preview URL/actions remain usable; Retry returns to constrained pending
++ adb -s emulator-5596 shell 'settings put system font_scale 2.0'
++ adb -s emulator-5596 shell 'am force-stop org.wastingnotime.myfeed'
++ adb -s emulator-5596 shell 'am start -W -n org.wastingnotime.myfeed/.MainActivity'
+Starting: Intent { cmp=org.wastingnotime.myfeed/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: org.wastingnotime.myfeed/.MainActivity
+TotalTime: 1168
+WaitTime: 1168
+Complete
+
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Your inbox · newest first', '', '[42,252][789,350]'), ('127.0.0.1', '', '[84,455][400,566]'), ('http://127.0.0.1/private', '', '[84,587][899,698]'), ('Saved Oct 31, 2026 5:08 PM', '', '[84,719][950,803]'), ('Saved offline · preview pending', '', '[84,824][996,992]'), ('Archive', '', '[470,1034][704,1132]'), ('Delete', '', '[768,1034][964,1132]'), ('my-feed', '', '[43,88][369,205]'), ('Search', '', '[454,98][669,196]'), ('Paste link', '', '[733,98][1037,196]'), ('Main', '', '[98,1763][247,1847]'), ('Grouped', '', '[411,1763][668,1847]'), ('Archived', '', '[773,1763][1041,1847]')]
++ adb -s emulator-5596 shell 'input swipe 540 1470 540 700 500'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input swipe 540 1470 540 700 500'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Your inbox · newest first', '', '[42,252][789,308]'), ('ogp.me', '', '[84,418][337,529]'), ('Open Graph protocol', '', '[84,550][804,661]'), ('The Open Graph protocol enables any web page to become a rich object in a social graph.', '', '[84,682][996,976]'), ('https://ogp.me/', '', '[84,997][557,1081]'), ('Saved Oct 31, 2026 5:08 PM', '', '[84,1102][950,1186]'), ('Preview saved · available offline', '', '[84,1207][996,1375]'), ('Archive', '', '[470,1417][704,1515]'), ('Delete', '', '[768,1417][964,1515]'), ('my-feed', '', '[43,88][369,205]'), ('Search', '', '[454,98][669,196]'), ('Paste link', '', '[733,98][1037,196]'), ('Main', '', '[98,1763][247,1847]'), ('Grouped', '', '[411,1763][668,1847]'), ('Archived', '', '[773,1763][1041,1847]')]
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'input tap 561 147'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
++ adb -s emulator-5596 exec-out screencap -p
+UI: [('Search saved links', '', '[84,310][733,421]'), ('Title, description or URL', '', '[84,474][802,558]'), ('Inbox', '', '[84,572][255,670]'), ('Archived', '', '[360,572][632,670]'), ('All', '', '[737,572][819,670]'), ('2 results · Inbox · newest first', '', '[42,705][953,803]'), ('Inbox', '', '[84,908][251,992]'), ('127.0.0.1', '', '[84,1013][400,1124]'), ('http://127.0.0.1/private', '', '[84,1145][899,1256]'), ('Saved Oct 31, 2026 5:08 PM', '', '[84,1277][950,1361]'), ('Saved offline · preview pending', '', '[84,1382][996,1550]'), ('Archive', '', '[470,1592][704,1620]'), ('Delete', '', '[768,1592][964,1620]'), ('my-feed', '', '[43,88][236,205]'), ('Close search', '', '[268,98][669,196]'), ('Paste link', '', '[733,98][1037,196]'), ('Main', '', '[98,1763][247,1847]'), ('Grouped', '', '[411,1763][668,1847]'), ('Archived', '', '[773,1763][1041,1847]')]
++ adb -s emulator-5596 shell 'input keyevent KEYCODE_BACK'
++ adb -s emulator-5596 shell 'uiautomator dump /sdcard/my-feed-wnt-222.xml'
++ adb -s emulator-5596 exec-out cat /sdcard/my-feed-wnt-222.xml
+PASS: 200% font card scroll/actions, search scopes, Back
+FINAL ROWS: [
+  {
+    "id": 2,
+    "originalUrl": "http://127.0.0.1/private",
+    "canonicalUrl": "http://127.0.0.1/private",
+    "host": "127.0.0.1",
+    "capturedAt": 1793477318017,
+    "archivedAt": null,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": null,
+    "description": null,
+    "imageUrl": null,
+    "siteName": null,
+    "previewStatus": "pending",
+    "imagePath": null,
+    "revision": 0
+  },
+  {
+    "id": 1,
+    "originalUrl": "https://ogp.me/",
+    "canonicalUrl": "https://ogp.me/",
+    "host": "ogp.me",
+    "capturedAt": 1793477303255,
+    "archivedAt": null,
+    "deletedAt": null,
+    "lastOpenedAt": null,
+    "title": "Open Graph protocol",
+    "description": "The Open Graph protocol enables any web page to become a rich object in a social graph.",
+    "imageUrl": "https://ogp.me/logo.png",
+    "siteName": null,
+    "previewStatus": "ready",
+    "imagePath": "1.jpg",
+    "revision": 0
+  }
+]
++ adb -s emulator-5596 shell 'settings put system font_scale 1.0'
++ adb -s emulator-5596 shell 'cmd connectivity airplane-mode disable'
++ adb -s emulator-5596 shell 'svc wifi enable'
++ adb -s emulator-5596 shell 'svc data enable'
