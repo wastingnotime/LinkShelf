@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import org.wastingnotime.myfeed.data.LinkAction
@@ -58,7 +59,7 @@ fun FeedScreen(model: FeedViewModel, open: (SavedLink) -> Unit) {
     MaterialTheme(colorScheme = lightColorScheme(primary = Color(0xFF315C4B),
         background = Color(0xFFF6F7F3), surface = Color(0xFFF6F7F3))) {
         Scaffold(
-            topBar = { TopAppBar(title = { Text("my-feed") }, actions = {
+            topBar = { TopAppBar(title = { Text("my-feed", maxLines = 1, overflow = TextOverflow.Ellipsis) }, actions = {
                 TextButton(onClick = { if (selection.searching) model.closeSearch() else model.startSearch() }) {
                     Text(if (selection.searching) "Close search" else "Search")
                 }
@@ -74,7 +75,7 @@ fun FeedScreen(model: FeedViewModel, open: (SavedLink) -> Unit) {
                                 FeedDestination.Main -> "▤"
                                 FeedDestination.Grouped -> "▦"
                                 FeedDestination.Archived -> "▣"
-                            }) }, label = { Text(tab.name) })
+                            }, modifier = Modifier.clearAndSetSemantics {}) }, label = { Text(tab.name) })
                     }
                 }
             },

@@ -5,6 +5,8 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.room.withTransaction
 import androidx.work.WorkManager
@@ -184,6 +186,78 @@ class InboxFlowTest {
         compose.onNodeWithText("Undo").performClick()
         awaitRows { it.single().deletedAt == null }
         compose.onNodeWithText(original).assertIsDisplayed()
+    }
+
+    @Test fun emptyViewsAndBackDismissDialogThenSearchThenReturnToMain() {
+        val empty = "A quiet inbox. Share a link to my-feed from another app, or paste one here."
+        compose.onNodeWithText(empty).assertIsDisplayed()
+        compose.onNodeWithText("Grouped").performClick()
+        compose.onNodeWithText(empty).assertIsDisplayed()
+        Espresso.pressBack()
+        compose.onNodeWithText("Main").assertIsSelected()
+        compose.onNodeWithText("Archived").performClick()
+        compose.onNodeWithText("No archived links yet.").assertIsDisplayed()
+        compose.onNodeWithText("Search").performClick()
+        compose.onNodeWithText("No matching links in Archived.").assertIsDisplayed()
+        compose.onNodeWithText("Paste link").performClick()
+        compose.onNodeWithText("URL or shared text").performTextInput("https://example.com/not-saved")
+        Espresso.closeSoftKeyboard()
+        Espresso.pressBack()
+        compose.onNodeWithText("Paste a link").assertDoesNotExist()
+        compose.onNodeWithText("Close search").assertIsDisplayed()
+        assertTrue(rows().isEmpty())
+        Espresso.pressBack()
+        compose.onNodeWithText("No archived links yet.").assertIsDisplayed()
+        compose.onNodeWithText("Archived").assertIsSelected()
+        Espresso.pressBack()
+        compose.onNodeWithText("Main").assertIsSelected()
+        compose.onNodeWithText(empty).assertIsDisplayed()
+    }
+
+    @Test fun partialSwipesShowActionAndCancelWithoutChangingRow() {
+        val saved = runBlocking { requireNotNull(app.repository.capture("https://example.com/feedback")) }
+        awaitRows { it.size == 1 }
+        val card = compose.onNodeWithTag("link-${saved.id}")
+        for ((direction, label) in listOf(1 to "Archive", -1 to "Delete")) {
+            card.performTouchInput {
+                down(center)
+                moveTo(center + Offset(direction * width * 0.25f, 0f), 500)
+            }
+            // Visible background feedback is separate from the always available action button.
+            compose.onNode(hasText(label) and !hasClickAction() and !hasAnyAncestor(hasClickAction()),
+                useUnmergedTree = true).assertIsDisplayed()
+            assertEquals(saved, rows().single())
+            card.performTouchInput { cancel() }
+            compose.waitForIdle()
+            assertEquals(saved, rows().single())
+            card.assertIsDisplayed()
+        }
+    }
+
+    @Test fun labeledTouchControlsAndFailedCardWorkWithoutSwiping() {
+        val saved = runBlocking { requireNotNull(app.repository.capture("https://example.com/accessible")) }
+        runBlocking { dao.finishPreview(saved.id, null, null, null, null, null, "failed") }
+        awaitRows { it.single().previewStatus == "failed" }
+        listOf("Search", "Paste link", "Retry preview", "Archive", "Delete").forEach { label ->
+            val bounds = compose.onNode(hasText(label) and hasClickAction())
+                .assertIsDisplayed().fetchSemanticsNode().touchBoundsInRoot
+            val minimum = with(compose.density) { 48.dp.toPx() } - 1f
+            assertTrue("$label touch height: ${bounds.height}", bounds.height >= minimum)
+            assertTrue("$label touch width: ${bounds.width}", bounds.width >= minimum)
+        }
+        listOf("Main", "Grouped", "Archived").forEach { label ->
+            compose.onNodeWithText(label).assertHasClickAction().assertHeightIsAtLeast(48.dp)
+        }
+        compose.onNodeWithTag("link-${saved.id}").assertHasClickAction()
+        compose.onNode(hasText("Archive") and hasClickAction()).performClick()
+        awaitRows { it.single().archivedAt != null }
+        compose.onNodeWithText("Undo").assertHasClickAction().performClick()
+        awaitRows { it.single().archivedAt == null }
+        compose.onNode(hasText("Delete") and hasClickAction()).performClick()
+        awaitRows { it.single().deletedAt != null }
+        compose.onNodeWithText("Undo").performClick()
+        awaitRows { it.single().deletedAt == null }
+        compose.onNodeWithTag("link-${saved.id}").assertIsDisplayed()
     }
 
     @Test fun groupedAndArchivedRenderSimilarityFallbackAndCaptureDateSections() {
