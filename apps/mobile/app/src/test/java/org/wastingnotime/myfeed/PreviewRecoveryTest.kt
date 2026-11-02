@@ -36,6 +36,17 @@ class PreviewRecoveryTest {
     @After fun close() { db.close(); context.deleteDatabase(name) }
     private fun page(text: String) = Download("https://example.com/final".toHttpUrl(), text.toByteArray(), "text/html")
 
+    @Test fun emptyRefreshKeepsImportedTextAndSavedCache() = runBlocking {
+        val saved = db.links().capture(url, 100)
+        db.links().finishPreview(saved.id, "Imported title", "Imported description", null, null, "existing.jpg", "pending")
+        val enricher = PreviewEnricher(db.links(), { _, _ -> page("<html></html>") }, { _, _ -> null })
+        enricher.enrich(saved.id, 3)
+        val refreshed = requireNotNull(db.links().find(saved.id))
+        assertEquals("Imported title", refreshed.title)
+        assertEquals("Imported description", refreshed.description)
+        assertEquals("existing.jpg", refreshed.imagePath)
+    }
+
     @Test fun committedOfflineCaptureSurvivesSchedulerFailureAndDatabaseReopen() = runBlocking {
         val repo = LinkRepository(db.links(), enqueuePreview = { throw IllegalStateException("scheduler unavailable") }) { 100 }
         val saved = requireNotNull(repo.capture(url.original))
@@ -70,7 +81,7 @@ class PreviewRecoveryTest {
         val unavailable = PreviewEnricher(db.links(), { _, _ -> throw IOException("offline") }, { _, _ -> null })
         repeat(3) { assertEquals(PreviewOutcome.Retry, unavailable.enrich(saved.id, it)) }
         assertEquals(PreviewOutcome.Done, unavailable.enrich(saved.id, 3))
-        assertEquals(saved.copy(previewStatus = "failed"), db.links().find(saved.id))
+        assertEquals(saved.copy(previewStatus = "failed:Page network request failed"), db.links().find(saved.id))
         val scheduled = mutableListOf<Long>()
         val repo = LinkRepository(db.links(), enqueuePreview = { scheduled += it }) { 200 }
         repo.retryPreview(saved.id)
@@ -78,7 +89,7 @@ class PreviewRecoveryTest {
         assertEquals("pending", db.links().find(saved.id)?.previewStatus)
         val denied = PreviewEnricher(db.links(), { _, _ -> throw UnsafePreview("private") }, { _, _ -> null })
         assertEquals(PreviewOutcome.Done, denied.enrich(saved.id, 0))
-        assertEquals("failed", db.links().find(saved.id)?.previewStatus)
+        assertEquals("failed:Page: private", db.links().find(saved.id)?.previewStatus)
         val again = requireNotNull(repo.capture(url.original))
         assertEquals(saved.id, again.id); assertEquals("pending", again.previewStatus)
         assertEquals(listOf(saved.id, saved.id), scheduled)
@@ -92,7 +103,7 @@ class PreviewRecoveryTest {
         assertEquals(PreviewOutcome.Done, enricher.enrich(saved.id, 0)); assertEquals(0, requests)
         db.links().capture(url, 300)
         enricher.enrich(saved.id, 0)
-        assertEquals("failed", db.links().find(saved.id)?.previewStatus)
+        assertEquals("failed:No preview metadata found", db.links().find(saved.id)?.previewStatus)
         assertEquals(url.original, db.links().find(saved.id)?.originalUrl)
         db.links().retryPreview(saved.id)
         val ready = PreviewEnricher(db.links(), { _, _ -> requests++; page("<title>Ready</title>") }, { _, _ -> null })
@@ -110,8 +121,10 @@ class PreviewRecoveryTest {
         assertEquals("Article", db.links().find(saved.id)?.title)
         assertEquals("pending", db.links().find(saved.id)?.previewStatus)
         assertEquals(PreviewOutcome.Done, enricher.enrich(saved.id, 3))
-        assertEquals("ready", db.links().find(saved.id)?.previewStatus)
+        assertEquals("partial:Image network request failed", db.links().find(saved.id)?.previewStatus)
         assertNull(db.links().find(saved.id)?.imagePath)
+        assertEquals(1, db.links().retryPreview(saved.id))
+        assertEquals("pending", db.links().find(saved.id)?.previewStatus)
     }
 
     @Test fun imageSafetyFailureKeepsTextAndLaterNetworkExhaustionKeepsPriorMetadata() = runBlocking {
@@ -121,18 +134,18 @@ class PreviewRecoveryTest {
             page("<title>Article</title><meta property=og:image content='/card.png'>")
         }, { _, _ -> null })
         assertEquals(PreviewOutcome.Done, deniedImage.enrich(saved.id, 0))
-        assertEquals("ready", db.links().find(saved.id)?.previewStatus)
+        assertEquals("partial:Image: image redirected to private address", db.links().find(saved.id)?.previewStatus)
         assertEquals("Article", db.links().find(saved.id)?.title)
         assertNull(db.links().find(saved.id)?.imagePath)
         // Simulate text already saved during an earlier image retry, then an unavailable page.
         db.links().finishPreview(saved.id, null, null, null, null, null, "pending") // ready rows ignore updates
-        assertEquals("ready", db.links().find(saved.id)?.previewStatus)
+        assertEquals("partial:Image: image redirected to private address", db.links().find(saved.id)?.previewStatus)
         val second = db.links().capture(requireNotNull(UrlCapture.normalize("https://example.com/retry")), 200)
         db.links().finishPreview(second.id, "Previous useful title", null, null, null, null, "pending")
         val offline = PreviewEnricher(db.links(), { _, _ -> throw IOException("offline") }, { _, _ -> null })
         assertEquals(PreviewOutcome.Done, offline.enrich(second.id, 3))
         assertEquals("Previous useful title", db.links().find(second.id)?.title)
-        assertEquals("ready", db.links().find(second.id)?.previewStatus)
+        assertEquals("partial:Page network request failed", db.links().find(second.id)?.previewStatus)
     }
 
     @Test fun undoReschedulesPreviewSkippedWhileDeleted() = runBlocking {
@@ -214,7 +227,7 @@ class PreviewRecoveryTest {
         val worker = TestListenableWorkerBuilder<PreviewWorker>(context)
             .setInputData(workDataOf("linkId" to saved.id)).build()
         assertEquals(ListenableWorker.Result.success(), worker.doWork())
-        assertEquals("failed", app.database.links().find(saved.id)?.previewStatus)
+        assertEquals("failed:Page: Non-public IP", app.database.links().find(saved.id)?.previewStatus)
         withContext(Dispatchers.IO) { app.database.clearAllTables() }
     }
 }

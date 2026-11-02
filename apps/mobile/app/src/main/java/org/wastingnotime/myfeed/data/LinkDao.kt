@@ -12,6 +12,12 @@ abstract class LinkDao {
     @Query("SELECT * FROM saved_links WHERE deletedAt IS NULL ORDER BY capturedAt DESC, id DESC")
     abstract fun observeVisible(): Flow<List<SavedLink>>
 
+    @Query("SELECT * FROM saved_links WHERE deletedAt IS NOT NULL ORDER BY deletedAt DESC, id DESC")
+    abstract fun observeDeleted(): Flow<List<SavedLink>>
+
+    @Query("UPDATE saved_links SET deletedAt = NULL, revision = revision + 1 WHERE id = :id AND deletedAt IS NOT NULL")
+    abstract suspend fun restoreDeleted(id: Long): Int
+
     @Query("SELECT * FROM saved_links ORDER BY capturedAt DESC, id DESC")
     abstract suspend fun all(): List<SavedLink>
 
@@ -26,7 +32,7 @@ abstract class LinkDao {
 
     @Query("""UPDATE saved_links SET capturedAt = MAX(capturedAt, :now),
         archivedAt = NULL, deletedAt = NULL,
-        previewStatus = CASE WHEN previewStatus = 'failed' THEN 'pending' ELSE previewStatus END, revision = revision + 1 WHERE canonicalUrl = :canonical""")
+        previewStatus = CASE WHEN (previewStatus LIKE 'failed%' OR previewStatus LIKE 'partial%' OR (previewStatus = 'ready' AND imageUrl IS NOT NULL AND imagePath IS NULL)) THEN 'pending' ELSE previewStatus END, revision = revision + 1 WHERE canonicalUrl = :canonical""")
     abstract suspend fun refresh(canonical: String, now: Long)
 
     @Transaction
@@ -61,7 +67,7 @@ abstract class LinkDao {
     @Query("SELECT id FROM saved_links WHERE previewStatus = 'pending' AND deletedAt IS NULL")
     abstract suspend fun pendingPreviews(): List<Long>
 
-    @Query("UPDATE saved_links SET previewStatus = 'pending' WHERE id = :id AND previewStatus = 'failed'")
+    @Query("UPDATE saved_links SET previewStatus = 'pending' WHERE id = :id AND deletedAt IS NULL AND previewStatus != 'pending'")
     abstract suspend fun retryPreview(id: Long): Int
 
     // Enrichment never touches lifecycle revisions, ordering, identity, or opening history.

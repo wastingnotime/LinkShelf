@@ -1,3 +1,10 @@
+# LinkShelf branding
+
+The app is displayed as **LinkShelf** from version 0.2.2. Its Android package,
+local database, scheduled backup names and JSON format identifier remain stable
+so existing installations and backups continue to work. See
+[branding](../../docs/branding.md) for launcher and splash assets.
+
 # Android app
 
 One application module; Compose UI → ViewModel → repository → Room. Both share
@@ -114,10 +121,13 @@ Metadata prefers Open Graph, then Twitter, then HTML title/description. Text is
 plain, entity-decoded and bounded (title 300, description 1,000, site name 150
 characters). Missing/invalid OG images can fall back to Twitter image metadata.
 Relative images resolve against the final validated page URL; HTML base,
-canonical, refresh, scripts, frames and oEmbed are never followed or executed.
+canonical, refresh, scripts and frames are never followed or executed.
 Missing/blocked/invalid images leave a readable text/URL card. Transient image
 errors retry while retaining text, then settle on text after the attempt limit.
-No special YouTube service or API is used; blocked/script-only pages fall back.
+Recognized YouTube watch/short/live/embed links first use YouTube's public oEmbed
+JSON endpoint, with a 64 KiB response limit; only title and thumbnail metadata
+are read. Embed HTML is ignored. If it fails, bounded public HTML is tried.
+There is no arbitrary oEmbed endpoint discovery or third-party preview service.
 
 All network access uses one transport with these controls:
 
@@ -136,13 +146,16 @@ All network access uses one transport with these controls:
   Policy derives from IANA's special-purpose registries; it is a static policy
   that should be reviewed when those registries change.
 - DNS wait 3 seconds, connect/read timeout 5 seconds, total call timeout 15 seconds
-  per hop. At most four hops each for one HTML page and one image, so a worker
-  performs at most eight calls. DNS uses two threads with eight queue slots;
+  per hop. At most four hops each for oEmbed (YouTube only), an HTML fallback,
+  and one image: at most twelve calls for YouTube, eight otherwise. DNS uses two threads with eight queue slots;
   an uninterruptible platform lookup cannot spawn unbounded threads.
-- HTML maximum 512 KiB; image maximum 2 MiB. Enforce both advertised length and
+- HTML reads only its first 2 MiB, allowing metadata extraction from larger pages;
+  images remain limited to 2 MiB. For images enforce both advertised length and
   streamed bytes, including chunked/unknown-length responses. Request identity
   encoding and reject compressed responses rather than risk decompression bombs.
-- HTML/XHTML only for metadata; JPEG/PNG/WebP only for images. Inspect raster type
+- HTML/XHTML for pages; application/json only for the fixed YouTube oEmbed
+  request. JSON and images reject oversized bodies rather than parsing prefixes.
+  JPEG/PNG/WebP only for images. Inspect raster type
   and dimensions before decoding: maximum 4,096 per side and 8 million source
   pixels. Sample to at most 1,024 per side and store a bounded JPEG in app-private
   files. UI loads only that local thumbnail, never `imageUrl`; no SVG/WebView or
@@ -158,3 +171,73 @@ Connected UI tests use WorkManager's test scheduler with unmet network constrain
 so they do not depend on external websites. The separate production smoke uses
 an isolated emulator and real public HTTPS. Evidence and limitations:
 [runs/WNT-220.md](../../runs/WNT-220.md).
+
+Preview failures retain a reason in the local preview status, including page or
+image request rejection, exhausted network retries, unsupported image decoding,
+and missing metadata. Partial previews keep their useful text and offer Retry
+preview. Text-only pages with no advertised image remain successful previews.
+Existing ready cards with an image URL but no cached image also offer retry;
+older failures have no retrospective diagnostic reason until retried.
+
+## Sharing, appearance and backups
+
+Each card's Share action sends its title and original URL through Android's share
+sheet. More → Appearance offers System (default), Light and Dark; the choice is
+saved on this device. More → About shows version, source and privacy information.
+
+More → Backup exports a versioned `my-feed` JSON document through Android's file
+picker. Import validates the entire file (maximum 10 MB / 10,000 links), then asks
+for confirmation and atomically adds missing canonical URLs. Existing links are
+unchanged, including their lifecycle state. Exports include archived/deleted
+links, titles, descriptions, source and capture/open timestamps. IDs, cached
+images, theme and backup-folder permissions are device-local; imported links get
+new IDs and previews are fetched again.
+
+Choose a backup folder to enable daily WorkManager backups and queue an initial
+backup. Back up now queues another backup; status reports the last successful
+write and latest failure. Android may delay daily work. Seven dated JSON backups
+are retained in the selected folder. Disabling stops scheduled work and releases
+folder access without deleting completed backups. Keep exports somewhere private.
+
+The folder-backup behavior was adapted from Sliding Tasks as an implementation
+reference; there is no build or runtime dependency on that repository.
+
+## UX update (0.2.0)
+
+Inbox replaces the Main label. Inbox, Grouped and Archived preserve their scroll
+positions independently; search focuses its input, offers Clear, and resets its
+results position when the query or scope changes. Paste keeps the draft and
+shows validation/storage errors inline, closing only after a successful save.
+
+Cards emphasize the title and show a compact source/date row. Archive/Restore is
+visible; the card menu contains Share, Delete and Link and preview details.
+Technical preview causes and Retry preview live in details. Pending previews do
+not imply the phone is offline. A missing cache can be fetched again; linked
+articles/videos are not downloaded for offline reading.
+
+More → Recently deleted lists soft-deleted links without automatic expiry.
+Restore preserves the prior Inbox/Archived state and invalidates stale Undo
+tokens. Restoring pending enrichment schedules it again. There is no permanent
+purge action.
+
+Backup is a full screen with selected folder, live work status and inline
+operation results. Import is reviewed on that screen before confirmation and
+shows new visible links, deleted records and existing URLs to skip. Appearance
+uses selected radio rows; About includes app version and build number.
+
+
+## Backup correctness (0.2.1)
+
+Imports validate all rows before the transaction, require integer nonnegative
+timestamps and string text fields, and reject duplicate canonical URLs or
+unsupported format versions. Existing local rows are never overwritten. Exports
+must pass the same validation and 10 MB / 10,000-link bounds before being written;
+an over-limit export reports failure rather than publishing an unrestorable file.
+
+Folder selection, disabling, and automatic/manual folder writes share a
+process-wide lock. Retention happens after publication; a retention/status error
+cannot delete the newly published backup. Manual document exports remain subject
+to the selected Android provider's write semantics: interrupted writes may leave
+an incomplete file, which import validation rejects. Cached images remain outside
+the portable backup. Preview refresh preserves earlier/imported text when fresh
+metadata is missing, and keeps an existing cached image when replacement fails.

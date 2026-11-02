@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">LinkShelf</string>
+    <string name="inbox_empty">A quiet inbox. Share a link to LinkShelf from another app, or paste one here.</string>
+    <string name="capture_saved">Saved to LinkShelf</string>
+</resources>

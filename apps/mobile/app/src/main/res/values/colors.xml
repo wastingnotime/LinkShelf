@@ -1,0 +1,7 @@
+<resources>
+    <color name="brand_green">#315C4B</color>
+    <color name="brand_cream">#F6F7F3</color>
+    <color name="launch_background">#F6F7F3</color>
+    <color name="launch_mark">#315C4B</color>
+    <bool name="light_system_bars">true</bool>
+</resources>

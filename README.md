@@ -1,4 +1,6 @@
-# my-feed
+# LinkShelf
+
+LinkShelf is the Android app maintained in the `my-feed` repository.
 
 Native Android personal link inbox: share a link, save it locally, and revisit it
 in a quiet visual feed. No account, backend, sync, or AI service is required.

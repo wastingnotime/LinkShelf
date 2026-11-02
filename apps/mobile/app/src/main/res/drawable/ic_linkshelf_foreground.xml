@@ -1,0 +1,7 @@
+<!-- Original LinkShelf mark: cards, bookmark cutout, and shelf. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+<path android:fillColor="@color/brand_cream" android:pathData="M37,28 L57,28 Q61,28 61,32 L61,33 L57,33 L57,32 L37,32 L37,65 L39,65 L39,69 L37,69 Q33,69 33,65 L33,32 Q33,28 37,28 Z"/>
+<path android:fillColor="@color/brand_cream" android:pathData="M47,36 L54,36 L54,49 L59,45 L64,49 L64,36 L69,36 Q73,36 73,40 L73,69 Q73,73 69,73 L47,73 Q43,73 43,69 L43,40 Q43,36 47,36 Z"/>
+<path android:fillColor="@color/brand_cream" android:pathData="M32,77 L76,77 Q78,77 78,79 Q78,81 76,81 L32,81 Q30,81 30,79 Q30,77 32,77 Z"/>
+</vector>

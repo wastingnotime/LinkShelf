@@ -77,13 +77,15 @@ class SafeHttp internal constructor(
 
     fun get(raw: String, image: Boolean = false): Download {
         var url = checkedUrl(raw)
-        val limit = if (image) IMAGE_BYTES else HTML_BYTES
+        val json = !image && YouTubeMetadata.isEndpoint(url)
+        val strict = image || json
+        val limit = if (json) JSON_BYTES else if (image) IMAGE_BYTES else HTML_BYTES
         repeat(MAX_REDIRECTS + 1) { hop ->
             val request = Request.Builder().url(url)
                 .header("User-Agent", "my-feed/0.1 (link preview)")
                 // Refuse compressed responses: cap wire bytes and decoded bytes identically.
                 .header("Accept-Encoding", "identity")
-                .header("Accept", if (image) "image/jpeg,image/png,image/webp" else "text/html,application/xhtml+xml")
+                .header("Accept", if (image) "image/jpeg,image/png,image/webp" else if (json) "application/json" else "text/html,application/xhtml+xml")
                 .build()
             val call = client.newCall(request)
             val response = call.execute()
@@ -101,14 +103,14 @@ class SafeHttp internal constructor(
                         throw UnsafePreview("Compressed response")
                     val type = response.header("Content-Type").orEmpty().substringBefore(';').trim().lowercase()
                     if (if (image) type !in setOf("image/jpeg", "image/png", "image/webp")
-                        else type !in setOf("text/html", "application/xhtml+xml")) throw UnsafePreview("Unsupported content type")
+                        else if (json) type != "application/json" else type !in setOf("text/html", "application/xhtml+xml")) throw UnsafePreview("Unsupported content type")
                     val body = response.body ?: throw UnsafePreview("Empty response")
-                    if (body.contentLength() > limit) throw UnsafePreview("Response too large")
+                    if (strict && body.contentLength() > limit) throw UnsafePreview("Response too large")
                     val bytes = ByteArrayOutputStream()
                     val input = body.byteStream()
                     val buffer = ByteArray(8192)
-                    while (true) {
-                        val count = input.read(buffer, 0, minOf(buffer.size, limit + 1 - bytes.size()))
+                    while (strict || bytes.size() < limit) {
+                        val count = input.read(buffer, 0, minOf(buffer.size, limit + (if (strict) 1 else 0) - bytes.size()))
                         if (count == -1) break
                         bytes.write(buffer, 0, count)
                         if (bytes.size() > limit) throw UnsafePreview("Response too large")
@@ -126,7 +128,8 @@ class SafeHttp internal constructor(
     }
 
     companion object {
-        const val HTML_BYTES = 512 * 1024
+        const val JSON_BYTES = 64 * 1024
+        const val HTML_BYTES = 2 * 1024 * 1024
         const val IMAGE_BYTES = 2 * 1024 * 1024
         const val MAX_REDIRECTS = 3
         fun redirectUrl(base: HttpUrl, reference: String): HttpUrl {

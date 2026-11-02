@@ -17,6 +17,9 @@ class FeedApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        org.wastingnotime.myfeed.ui.syncLaunchAppearance(this,
+            getSharedPreferences("appearance", 0).getString("theme", "System") ?: "System")
+        org.wastingnotime.myfeed.data.ScheduledBackup(this).ensureScheduled()
         applicationScope.launch {
             // Recover a process death between the Room commit and WorkManager enqueue, including v1 rows.
             try { database.links().pendingPreviews().forEach { scheduler.enqueue(it, recover = true) } }

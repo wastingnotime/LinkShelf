@@ -1,7 +1,22 @@
 <resources>
-    <style name="Theme.MyFeed" parent="android:style/Theme.Material.Light.NoActionBar">
+    <style name="Theme.LinkShelf" parent="android:style/Theme.Material.Light.NoActionBar">
         <item name="android:fontFamily">sans</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:colorAccent">#315C4B</item>
+        <item name="android:windowLightStatusBar">@bool/light_system_bars</item>
+        <item name="android:windowBackground">@color/launch_background</item>
+        <item name="android:colorAccent">@color/brand_green</item>
+    </style>
+    <style name="Theme.LinkShelf.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/launch_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_linkshelf_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.LinkShelf</item>
+        <item name="android:windowLightStatusBar">@bool/light_system_bars</item>
+        <item name="android:statusBarColor">@color/launch_background</item>
+        <item name="android:navigationBarColor">@color/launch_background</item>
+    </style>
+    <style name="Theme.LinkShelf.Share" parent="Theme.LinkShelf">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 </resources>

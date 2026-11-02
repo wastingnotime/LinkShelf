@@ -20,22 +20,32 @@ class PreviewEnricher(
         var metadata: Metadata? = Metadata(link.title, link.description, link.siteName, link.imageUrl)
         var path: String? = link.imagePath
         var retryImage = false
+        var failure: String? = null
+        var stage = "Page"
         try {
-            metadata = runInterruptible(Dispatchers.IO) { MetadataParser.parse(download(link.originalUrl, false)) }
-            path = null
+            val fetched = runInterruptible(Dispatchers.IO) { YouTubeMetadata.fetch(link.originalUrl, download) }
+            // An empty/partial response must not erase imported or previously saved metadata.
+            metadata = Metadata(fetched.title ?: link.title, fetched.description ?: link.description,
+                fetched.siteName ?: link.siteName, fetched.imageUrl ?: link.imageUrl)
             metadata.imageUrl?.let { image ->
-                try { path = runInterruptible(Dispatchers.IO) { saveImage(id, download(image, true).bytes) } }
-                catch (_: UnsafePreview) { /* text-only card */ }
-                catch (_: IOException) { retryImage = attempt < MAX_ATTEMPTS - 1 }
+                stage = "Image"
+                try {
+                    val savedImage = runInterruptible(Dispatchers.IO) { saveImage(id, download(image, true).bytes) }
+                    if (savedImage == null) failure = "Image format or dimensions unsupported" else path = savedImage
+                }
+                catch (e: UnsafePreview) { failure = "Image: ${e.message}" }
+                catch (_: IOException) { failure = "Image network request failed"; retryImage = attempt < MAX_ATTEMPTS - 1 }
             }
-        } catch (_: UnsafePreview) { /* permanent fallback */ }
+        } catch (e: UnsafePreview) { failure = "$stage: ${e.message}" }
         catch (_: IOException) {
+            failure = "Page network request failed"
             if (attempt < MAX_ATTEMPTS - 1) return PreviewOutcome.Retry
         } catch (cancelled: CancellationException) { throw cancelled }
-        catch (_: RuntimeException) { /* malformed metadata/decoder failure: preserve useful text */ }
+        catch (_: RuntimeException) { failure = "$stage could not be processed" }
+        if (failure == null && metadata?.useful != true && path == null) failure = "No preview metadata found"
         val ready = metadata?.useful == true || path != null
         dao.finishPreview(id, metadata?.title, metadata?.description, metadata?.siteName,
-            metadata?.imageUrl, path, if (retryImage) "pending" else if (ready) "ready" else "failed")
+            metadata?.imageUrl, path, if (retryImage) "pending" else if (failure != null) "${if (ready) "partial" else "failed"}:$failure" else if (ready) "ready" else "failed")
         return if (retryImage) PreviewOutcome.Retry else PreviewOutcome.Done
     }
 

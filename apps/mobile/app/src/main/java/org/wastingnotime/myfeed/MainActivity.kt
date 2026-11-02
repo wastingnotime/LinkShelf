@@ -2,19 +2,27 @@ package org.wastingnotime.myfeed
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.net.toUri
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import org.wastingnotime.myfeed.ui.FeedScreen
 import org.wastingnotime.myfeed.ui.FeedViewModel
+import org.wastingnotime.myfeed.ui.launchAppearanceContext
 
 class MainActivity : ComponentActivity() {
     private val model: FeedViewModel by viewModels { FeedViewModel.Factory(application as FeedApplication) }
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(launchAppearanceContext(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {

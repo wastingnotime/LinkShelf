@@ -26,6 +26,8 @@ import org.wastingnotime.myfeed.data.SearchScope
 
 data class FeedState(val loading: Boolean = true, val selection: FeedSelection = FeedSelection(),
     val content: FeedContent = FeedContent())
+data class SettingsState(val busy: Boolean = false, val message: String? = null, val importRaw: String? = null)
+data class PasteState(val text: String = "", val saving: Boolean = false, val error: String? = null, val saved: Boolean = false)
 data class Notice(val text: String, val undo: UndoToken? = null)
 
 class FeedViewModel(private val app: FeedApplication) : ViewModel() {
@@ -58,6 +60,50 @@ class FeedViewModel(private val app: FeedApplication) : ViewModel() {
             try { block() }
             catch (cancelled: CancellationException) { throw cancelled }
             catch (_: Exception) { notify("Could not update inbox. Please try again.") }
+        }
+    }
+
+    private val settingState = MutableStateFlow(SettingsState())
+    val settings = settingState.asStateFlow()
+    fun pendingImport(raw: String?) { settingState.update { it.copy(importRaw = raw) } }
+    fun settingsOperation(block: suspend () -> String) {
+        if (settingState.value.busy) return
+        settingState.update { it.copy(busy = true, message = null) }
+        app.applicationScope.launch {
+            val message = try { block() }
+            catch (e: CancellationException) { throw e }
+            catch (_: org.json.JSONException) { "Invalid backup file. Choose a LinkShelf or my-feed JSON export." }
+            catch (e: IllegalArgumentException) { "Invalid backup: " + (e.message ?: "unsupported contents") }
+            catch (_: SecurityException) { "File or folder access was lost. Choose it again." }
+            catch (_: java.io.IOException) { "Could not read or write the file. Check storage and try again." }
+            catch (e: Exception) { e.message ?: "Operation failed. Please try again." }
+            settingState.update { it.copy(busy = false, message = message) }
+        }
+    }
+    val deleted = app.database.links().observeDeleted().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    private val pasteState = MutableStateFlow(PasteState())
+    val paste = pasteState.asStateFlow()
+    fun editPaste(text: String) { if (!pasteState.value.saving) pasteState.value = PasteState(text) }
+    fun resetPaste() { pasteState.value = PasteState() }
+    fun savePaste() {
+        val before = pasteState.value
+        if (before.saving) return
+        pasteState.value = before.copy(saving = true, error = null)
+        app.applicationScope.launch {
+            try {
+                val saved = repository.capture(before.text)
+                pasteState.value = before.copy(saved = saved != null,
+                    error = if (saved == null) "Enter a valid HTTP or HTTPS link" else null)
+            } catch (e: CancellationException) { throw e }
+            catch (_: Exception) { pasteState.value = before.copy(error = "Could not save. Please try again.") }
+        }
+    }
+    fun restoreDeleted(id: Long) = write {
+        if (app.database.links().restoreDeleted(id) == 1) {
+            app.database.links().find(id)?.takeIf { it.previewStatus == "pending" }?.let {
+                org.wastingnotime.myfeed.preview.PreviewScheduler(app).enqueue(id, recover = true)
+            }
+            notify("Link restored to its previous view")
         }
     }
 

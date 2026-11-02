@@ -38,7 +38,7 @@ class ShareCapture(app: FeedApplication, text: String) : ViewModel() {
     // Rotation/back cannot cancel a database save. Activity finishes only after commit.
     val result = app.applicationScope.async {
         try {
-            if (app.repository.capture(text) == null) "No valid HTTP or HTTPS link found" else "Saved to my-feed"
+            if (app.repository.capture(text) == null) "No valid HTTP or HTTPS link found" else app.getString(R.string.capture_saved)
         } catch (cancelled: CancellationException) {
             throw cancelled
         } catch (_: Exception) {

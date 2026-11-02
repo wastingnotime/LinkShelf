@@ -7,17 +7,20 @@
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:icon="@drawable/ic_inbox"
-        android:label="my-feed"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyFeed">
-        <activity android:name=".MainActivity" android:exported="true">
+        android:theme="@style/Theme.LinkShelf">
+        <activity android:name=".MainActivity" android:exported="true"
+            android:theme="@style/Theme.LinkShelf.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ShareActivity" android:exported="true"
+            android:theme="@style/Theme.LinkShelf.Share"
             android:excludeFromRecents="true" android:taskAffinity="">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />

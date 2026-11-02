@@ -1,0 +1,5 @@
+<resources>
+    <color name="launch_background">#141A17</color>
+    <color name="launch_mark">#A0D0B8</color>
+    <bool name="light_system_bars">false</bool>
+</resources>

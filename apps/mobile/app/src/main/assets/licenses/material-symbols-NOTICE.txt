@@ -1,0 +1,6 @@
+Material Symbols Rounded
+Copyright Google LLC
+Licensed under the Apache License, Version 2.0.
+Source: https://github.com/google/material-design-icons/tree/10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7/symbols/android
+24dp, weight 400; outlined and filled navigation variants.
+Modification: removed Android theme tint; Compose supplies theme-aware tint.

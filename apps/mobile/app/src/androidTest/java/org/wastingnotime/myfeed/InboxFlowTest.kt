@@ -61,7 +61,7 @@ class InboxFlowTest {
     @Test fun pasteRecreateOpenArchiveDeleteUndoAndRestore() {
         val original = "HTTPS://Example.com:443/article?q=one#original"
         val openedUrl = "https://Example.com:443/article?q=one#original"
-        compose.onNodeWithText("Paste link").performClick()
+        compose.onNodeWithContentDescription("Paste link").performClick()
         compose.onNodeWithText("URL or shared text").performTextInput(original)
         compose.onNodeWithText("Save link").performClick()
         awaitRows { it.size == 1 }
@@ -87,6 +87,7 @@ class InboxFlowTest {
         val archivedAt = rows().single().archivedAt
         // Dismiss the archive snackbar so the next Undo belongs to deletion.
         compose.onNodeWithContentDescription("Dismiss").performClick()
+        compose.onNodeWithContentDescription("More actions").performClick()
         compose.onNode(hasText("Delete") and hasClickAction()).performClick()
         awaitRows { it.single().deletedAt != null }
         compose.onNodeWithText(original).assertDoesNotExist()
@@ -164,9 +165,11 @@ class InboxFlowTest {
         awaitRows { it.single().previewStatus == "failed" }
         compose.onNodeWithText(original).assertIsDisplayed()
         compose.onNodeWithText("Preview unavailable · link saved").assertIsDisplayed()
+        compose.onNodeWithContentDescription("More actions").performClick()
+        compose.onNodeWithText("Link and preview details").performClick()
         compose.onNodeWithText("Retry preview").performClick()
         awaitRows { it.single().previewStatus == "pending" }
-        compose.onNodeWithText("Saved offline · preview pending").assertIsDisplayed()
+        compose.onNodeWithText("Fetching preview · link saved").assertIsDisplayed()
         compose.onNodeWithText(original).assertIsDisplayed()
         assertEquals(saved.id, rows().single().id)
         assertEquals(saved.revision, rows().single().revision)
@@ -189,7 +192,7 @@ class InboxFlowTest {
     }
 
     @Test fun emptyViewsAndBackDismissDialogThenSearchThenReturnToMain() {
-        val empty = "A quiet inbox. Share a link to my-feed from another app, or paste one here."
+        val empty = "A quiet inbox. Share a link to LinkShelf from another app, or paste one here."
         fun awaitText(text: String) {
             // Room/Dispatchers.Default projection can finish after Compose becomes idle.
             compose.waitUntil(10_000) { compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() }
@@ -199,23 +202,23 @@ class InboxFlowTest {
         compose.onNodeWithText("Grouped").performClick()
         awaitText(empty)
         Espresso.pressBack()
-        compose.onNodeWithText("Main").assertIsSelected()
+        compose.onNodeWithText("Inbox").assertIsSelected()
         compose.onNodeWithText("Archived").performClick()
         awaitText("No archived links yet.")
-        compose.onNodeWithText("Search").performClick()
+        compose.onNodeWithContentDescription("Search").performClick()
         awaitText("No matching links in Archived.")
-        compose.onNodeWithText("Paste link").performClick()
+        compose.onNodeWithContentDescription("Paste link").performClick()
         compose.onNodeWithText("URL or shared text").performTextInput("https://example.com/not-saved")
         Espresso.closeSoftKeyboard()
         Espresso.pressBack()
         compose.onNodeWithText("Paste a link").assertDoesNotExist()
-        compose.onNodeWithText("Close search").assertIsDisplayed()
+        compose.onNodeWithContentDescription("Close search").assertIsDisplayed()
         assertTrue(rows().isEmpty())
         Espresso.pressBack()
         awaitText("No archived links yet.")
         compose.onNodeWithText("Archived").assertIsSelected()
         Espresso.pressBack()
-        compose.onNodeWithText("Main").assertIsSelected()
+        compose.onNodeWithText("Inbox").assertIsSelected()
         awaitText(empty)
     }
 
@@ -243,14 +246,14 @@ class InboxFlowTest {
         val saved = runBlocking { requireNotNull(app.repository.capture("https://example.com/accessible")) }
         runBlocking { dao.finishPreview(saved.id, null, null, null, null, null, "failed") }
         awaitRows { it.single().previewStatus == "failed" }
-        listOf("Search", "Paste link", "Retry preview", "Archive", "Delete").forEach { label ->
-            val bounds = compose.onNode(hasText(label) and hasClickAction())
+        listOf("Search", "Paste link", "More actions").forEach { label ->
+            val bounds = compose.onNodeWithContentDescription(label)
                 .assertIsDisplayed().fetchSemanticsNode().touchBoundsInRoot
             val minimum = with(compose.density) { 48.dp.toPx() } - 1f
             assertTrue("$label touch height: ${bounds.height}", bounds.height >= minimum)
             assertTrue("$label touch width: ${bounds.width}", bounds.width >= minimum)
         }
-        listOf("Main", "Grouped", "Archived").forEach { label ->
+        listOf("Inbox", "Grouped", "Archived").forEach { label ->
             compose.onNodeWithText(label).assertHasClickAction().assertHeightIsAtLeast(48.dp)
         }
         compose.onNodeWithTag("link-${saved.id}").assertHasClickAction()
@@ -258,6 +261,7 @@ class InboxFlowTest {
         awaitRows { it.single().archivedAt != null }
         compose.onNodeWithText("Undo").assertHasClickAction().performClick()
         awaitRows { it.single().archivedAt == null }
+        compose.onNodeWithContentDescription("More actions").performClick()
         compose.onNode(hasText("Delete") and hasClickAction()).performClick()
         awaitRows { it.single().deletedAt != null }
         compose.onNodeWithText("Undo").performClick()
@@ -310,7 +314,7 @@ class InboxFlowTest {
                 host = "example.com", capturedAt = 400, title = "needle", deletedAt = 500))
         }
         awaitRows { it.size == 3 }
-        compose.onNodeWithText("Search").performClick()
+        compose.onNodeWithContentDescription("Search").performClick()
         compose.onNodeWithTag("scope-Inbox").assertIsSelected()
         compose.onNodeWithText("Search saved links").performTextInput("NEEDLE")
         Espresso.closeSoftKeyboard()
@@ -340,16 +344,16 @@ class InboxFlowTest {
         compose.waitUntil(10_000) { compose.onAllNodesWithTag("link-1").fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("link-1").assertIsDisplayed()
         Espresso.pressBack()
-        compose.onNodeWithText("Search").assertIsDisplayed()
+        compose.onNodeWithContentDescription("Search").assertIsDisplayed()
         compose.onNodeWithText("Grouped").performClick()
-        compose.onNodeWithText("Search").performClick()
+        compose.onNodeWithContentDescription("Search").performClick()
         compose.onNodeWithTag("scope-Inbox").assertIsSelected()
-        compose.onNodeWithText("Close search").performClick()
+        compose.onNodeWithContentDescription("Close search").performClick()
         compose.onNodeWithText("Archived").performClick()
-        compose.onNodeWithText("Search").performClick()
+        compose.onNodeWithContentDescription("Search").performClick()
         compose.onNodeWithTag("scope-Archived").assertIsSelected()
-        compose.onNodeWithText("Close search").performClick()
+        compose.onNodeWithContentDescription("Close search").performClick()
         Espresso.pressBack()
-        compose.onNodeWithText("Your inbox · newest first").assertIsDisplayed()
+        compose.onNodeWithText("Inbox · newest first").assertIsDisplayed()
     }
 }

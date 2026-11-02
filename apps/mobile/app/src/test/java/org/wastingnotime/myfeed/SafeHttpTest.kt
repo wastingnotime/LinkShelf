@@ -119,14 +119,14 @@ class SafeHttpTest {
         blocked { http().get(url()) }; assertEquals(4, server.requestCount)
     }
 
-    @Test fun rejectsKnownAndChunkedOversizeHtmlAndImagesAndCompressedOrWrongTypes() {
+    @Test fun boundsHtmlPrefixesRejectsOversizeImagesAndCompressedOrWrongTypes() {
         for (image in listOf(false, true)) {
             val type = if (image) "image/png" else "text/html"
             val limit = if (image) SafeHttp.IMAGE_BYTES else SafeHttp.HTML_BYTES
             server.enqueue(MockResponse().setHeader("Content-Type", type).setBody("x".repeat(limit + 1)))
-            blocked { http().get(url(), image) }
+            if (image) blocked { http().get(url(), true) } else assertEquals(limit, http().get(url()).bytes.size)
             server.enqueue(MockResponse().setHeader("Content-Type", type).setChunkedBody("x".repeat(limit + 1), 4096))
-            blocked { http().get(url(), image) }
+            if (image) blocked { http().get(url(), true) } else assertEquals(limit, http().get(url()).bytes.size)
             server.enqueue(MockResponse().setHeader("Content-Type", type).setBody("x".repeat(limit)))
             assertEquals(limit, http().get(url(), image).bytes.size)
         }
@@ -134,6 +134,16 @@ class SafeHttpTest {
         server.enqueue(MockResponse().setHeader("Content-Type", "image/svg+xml").setBody("<svg/>"))
         blocked { http().get(url(), true) }
         server.enqueue(MockResponse().setBody("<html/>")); blocked { http().get(url()) }
+    }
+
+    @Test fun largePageKeepsEarlyMetadataWithoutDownloadingItsEntireBody() {
+        val prefix = "<meta property='og:title' content='Large page'><meta property='og:image' content='/card.jpg'>"
+        server.enqueue(MockResponse().setHeader("Content-Type", "text/html")
+            .setBody(prefix + "x".repeat(4 * SafeHttp.HTML_BYTES)))
+        val download = http().get(url())
+        assertEquals(SafeHttp.HTML_BYTES, download.bytes.size)
+        assertEquals("Large page", MetadataParser.parse(download).title)
+        assertTrue(receivedBytes < 2 * SafeHttp.HTML_BYTES)
     }
 
     @Test fun rejectedAndRedirectBodiesAreCancelledWithoutDrainingDownloads() {
