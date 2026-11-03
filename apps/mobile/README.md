@@ -22,6 +22,9 @@ Use JDK 17 or 21. Set `ANDROID_HOME` to an Android SDK or put
 ```sh
 sdkmanager 'platforms;android-36' 'build-tools;35.0.0' 'platform-tools'
 make -C ../.. mobile-build
+make -C ../.. mobile-run
+# Optional: choose a device/emulator or a different AVD
+ANDROID_SERIAL=emulator-5556 ANDROID_AVD=my-feed-wnt-222 make -C ../.. mobile-run
 ```
 
 The checked-in Gradle 8.13 wrapper verifies the distribution SHA-256. Versions
