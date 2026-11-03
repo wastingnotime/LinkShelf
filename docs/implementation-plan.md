@@ -16,7 +16,7 @@ extraction. Main, Grouped, and Archived query the same collection.
 
 - Inbox means non-archived and non-deleted, regardless of lastOpenedAt.
 - Soft delete persists deletedAt; undo restores the previous lifecycle state.
-  No automatic permanent purge in MVP.
+  Deleted links are permanently purged after 30 days, or individually on request.
 - Duplicate capture atomically reuses a canonical URL, refreshes capturedAt, and
   clears archivedAt/deletedAt. Preserve originalUrl and lastOpenedAt. Enforce a
   unique canonical URL; test concurrent capture.
@@ -64,3 +64,10 @@ Each implementation issue executes in a dedicated worker worktree. Record test
 commands and limits in runs/ and review PR evidence before accepting completion.
 Dependency versions, minimum Android version, and SDK availability are resolved
 by the implementation worker from official Android documentation and local tools.
+
+## First Play internal release
+
+The Android application ID and code namespace are `org.wastingnotime.linkshelf`.
+Minimum SDK is 24 (Android 7.0) to keep Play automatic installer protection
+enabled, matching Sliding Tasks per the user's release instruction.
+See [Play release setup](play-release.md).

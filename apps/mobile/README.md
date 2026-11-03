@@ -28,7 +28,7 @@ The checked-in Gradle 8.13 wrapper verifies the distribution SHA-256. Versions
 are pinned: AGP 8.13.2, Kotlin/Compose compiler 2.2.21, KSP 2.2.21-2.0.4,
 Compose BOM 2025.10.01, Room 2.8.4, Activity 1.11.0, Lifecycle 2.9.4,
 coroutines 1.10.2, WorkManager 2.11.2, OkHttp 4.12.0, jsoup 1.22.2. These pinned versions support compile/target API 36 and
-minimum API 23. Official version references are in the validation record.
+minimum API 24. Official version references are in the validation record.
 
 ```sh
 ./gradlew :app:testDebugUnitTest
@@ -37,10 +37,10 @@ ANDROID_SERIAL=emulator-5590 ./gradlew :app:connectedDebugAndroidTest
 adb -s emulator-5590 install -r app/build/outputs/apk/debug/app-debug.apk
 adb -s emulator-5590 shell am start -W -a android.intent.action.SEND -t text/plain \
   --es android.intent.extra.TEXT 'Read https://example.com/story' \
-  org.wastingnotime.myfeed/.ShareActivity
+  org.wastingnotime.linkshelf/.ShareActivity
 ```
 
-Connected tests clear **my-feed's data on the selected test device**. Select a
+Connected tests clear **LinkShelf's data on the selected test device**. Select a
 dedicated emulator with `ANDROID_SERIAL`; the root shortcut requires it. CI runs
 unit tests, lint, and API 35 emulator tests before publishing a debug APK artifact.
 Debug APK: `app/build/outputs/apk/debug/app-debug.apk`. It uses Android's local
@@ -86,7 +86,7 @@ debug signing key; release signing/distribution is not part of this milestone.
   previous archive/delete state. It preserves later opening history and refuses
   stale undo after a newer capture or lifecycle action. Undo lasts for the
   snackbar's lifetime (rotation/process death may dismiss it). Soft-deleted rows
-  persist with no automatic purge and can be recovered by re-sharing.
+  are retained for 30 days and can be restored or re-shared before permanent deletion.
 - Tap dispatches `ACTION_VIEW` with the first original URL, including its fragment.
   Only scheme casing is lowercased for Android's case-sensitive intent filters;
   host spelling, explicit port, path, query, and fragment remain intact.
@@ -160,7 +160,7 @@ All network access uses one transport with these controls:
   pixels. Sample to at most 1,024 per side and store a bounded JPEG in app-private
   files. UI loads only that local thumbnail, never `imageUrl`; no SVG/WebView or
   remote executable content. Thumbnail files follow the retained soft-deleted
-  collection and are removed by uninstall/clear-data.
+  collection and are removed during permanent-deletion cleanup.
 
 Cleartext is enabled to support deliberately saved `http://` links through this
 same safety policy. HTTP content has no transport authenticity. Private/local
@@ -185,7 +185,7 @@ Each card's Share action sends its title and original URL through Android's shar
 sheet. More → Appearance offers System (default), Light and Dark; the choice is
 saved on this device. More → About shows version, source and privacy information.
 
-More → Backup exports a versioned `my-feed` JSON document through Android's file
+More → Backup exports a versioned `linkshelf` JSON document through Android's file
 picker. Import validates the entire file (maximum 10 MB / 10,000 links), then asks
 for confirmation and atomically adds missing canonical URLs. Existing links are
 unchanged, including their lifecycle state. Exports include archived/deleted
@@ -215,10 +215,13 @@ Technical preview causes and Retry preview live in details. Pending previews do
 not imply the phone is offline. A missing cache can be fetched again; linked
 articles/videos are not downloaded for offline reading.
 
-More → Recently deleted lists soft-deleted links without automatic expiry.
+More → Recently deleted lists soft-deleted links for 30 days from deletion.
 Restore preserves the prior Inbox/Archived state and invalidates stale Undo
-tokens. Restoring pending enrichment schedules it again. There is no permanent
-purge action.
+tokens. Restoring pending enrichment schedules it again. Each card also offers
+Delete permanently (without undo). Cleanup runs on app startup/resume and in a daily
+WorkManager job; Android may defer background execution. Existing expired records
+are included. Cached thumbnails are cleaned up too. Previously exported backup
+files are unchanged; importing expired deleted records triggers cleanup.
 
 Backup is a full screen with selected folder, live work status and inline
 operation results. Import is reviewed on that screen before confirmation and
@@ -241,3 +244,24 @@ to the selected Android provider's write semantics: interrupted writes may leave
 an incomplete file, which import validation rejects. Cached images remain outside
 the portable backup. Preview refresh preserves earlier/imported text when fresh
 metadata is missing, and keeps an existing cached image when replacement fails.
+
+Android application ID and code namespace: `org.wastingnotime.linkshelf`.
+The earlier `org.wastingnotime.myfeed` development app is a separate Android
+installation; export its backup and import it into LinkShelf to transfer data.
+The legacy `my-feed` backup format remains readable for compatibility.
+
+## Languages and favorites
+
+The interface supports US English (`en-US`) and Brazilian Portuguese (`pt-BR`),
+following Android's language preference with English as the fallback. Android 13+
+also exposes both choices in the system's per-app language settings. Saved titles,
+descriptions, URLs and stored technical preview diagnostics remain as captured.
+Theme and settings keys stay independent of translated labels.
+
+Tap a card's star to add/remove a favorite from Inbox, Grouped, Archived or search.
+Grouped puts active favorites in its first group, newest capture first, with each
+card appearing exactly once. Inbox and search keep chronological order; Archived
+keeps date/similarity sections. The star survives restarting, re-sharing,
+archive/delete/restore, preview updates and lifecycle Undo. Room schema 3 migrates
+existing rows to unstarred without dropping data. Backups include the boolean
+`isFavorite`; version-1 backups that omit it remain readable as unstarred.

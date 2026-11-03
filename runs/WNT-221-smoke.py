@@ -13,7 +13,7 @@ import re
 serial = sys.argv[1]
 if not serial.startswith("emulator-"):
     raise SystemExit("Use a dedicated emulator; this smoke clears the app's data")
-package = "org.wastingnotime.myfeed"
+package = "org.wastingnotime.linkshelf"
 root = pathlib.Path(__file__).resolve().parents[1]
 
 

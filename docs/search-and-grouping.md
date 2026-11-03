@@ -8,8 +8,18 @@ recompute the views locally; no request or classification service is involved.
 
 Main and Grouped select `deletedAt == null && archivedAt == null`. Archived
 selects `deletedAt == null && archivedAt != null`. Every selected ID occurs once.
-All ordering uses capture time descending, then stable ID descending, matching
-Main's existing rule. Opening and archive time do not affect ordering.
+Within each group and in flat views, ordering uses capture time descending, then
+stable ID descending, matching Main's existing rule. Grouped places its Favorites
+group first when any active links are starred, then applies similarity grouping
+to the remaining active links. A favorite appears only in Favorites; it is never
+duplicated in a similarity group. Favorites can span hosts and titles. Opening and archive time do not affect ordering.
+
+A card's star toggles its persisted `isFavorite` flag independently of opening,
+archive/delete state and lifecycle Undo. Re-sharing, restoring and preview
+updates preserve the flag. Archived retains capture-day/similarity grouping;
+archived/deleted favorites stay out of Grouped. Removing the last active favorite
+removes the Favorites heading. Backup exports preserve favorites; older backups
+without the flag import as unstarred.
 
 ## Similarity algorithm
 

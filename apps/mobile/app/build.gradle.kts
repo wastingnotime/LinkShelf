@@ -6,15 +6,25 @@ plugins {
 }
 
 android {
-    namespace = "org.wastingnotime.myfeed"
+    namespace = "org.wastingnotime.linkshelf"
     compileSdk = 36
     defaultConfig {
-        applicationId = "org.wastingnotime.myfeed"
-        minSdk = 23
+        applicationId = "org.wastingnotime.linkshelf"
+        minSdk = 24
         targetSdk = 36
         versionCode = 4
         versionName = "0.2.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    val releaseStore = providers.environmentVariable("LINKSHELF_UPLOAD_STORE")
+    if (releaseStore.isPresent) {
+        signingConfigs.create("upload") {
+            storeFile = file(releaseStore.get())
+            storePassword = providers.environmentVariable("LINKSHELF_UPLOAD_PASSWORD").get()
+            keyAlias = "upload"
+            keyPassword = storePassword
+        }
+        buildTypes.getByName("release") { signingConfig = signingConfigs.getByName("upload") }
     }
     buildFeatures { compose = true }
     compileOptions {

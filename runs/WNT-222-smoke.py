@@ -17,7 +17,7 @@ import xml.etree.ElementTree as ET
 serial = sys.argv[1]
 if serial != 'emulator-5596':
     raise SystemExit('Use WNT-222 isolated emulator-5596; this clears my-feed data')
-package = 'org.wastingnotime.myfeed'
+package = 'org.wastingnotime.linkshelf'
 root = pathlib.Path(__file__).resolve().parents[1]
 
 

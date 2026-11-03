@@ -44,7 +44,7 @@ jobs:
       - name: Upload verified APK
         uses: actions/upload-artifact@v4
         with:
-          name: my-feed-debug-${{ github.sha }}
+          name: linkshelf-debug-${{ github.sha }}
           path: apps/mobile/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
       - name: Upload test evidence
